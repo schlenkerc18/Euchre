@@ -1,6 +1,6 @@
 package com.hfad.euchreai;
 
-import android.support.app.Activity;
+import android.app.Activity;
 import android.os.Bundle;
 
 public class RulebookActivity extends Activity {

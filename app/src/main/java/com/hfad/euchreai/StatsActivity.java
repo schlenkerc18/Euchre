@@ -1,6 +1,6 @@
 package com.hfad.euchreai;
 
-import android.support.v7.app.Activity;
+import android.app.Activity;
 import android.os.Bundle;
 
 public class StatsActivity extends Activity {

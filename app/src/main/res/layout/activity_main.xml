@@ -10,8 +10,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.hfad.euchreai.MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/activity_game"
+        android:onClick="onGameActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Play!" />
+
+    <Button
+        android:id="@+id/activity_stats"
+        android:onClick="onStatsActivity"
+        android:layout_below="@+id/activity_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Statistics"/>
+
+    <Button
+        android:id="@+id/activity_rulebook"
+        android:onClick="onRulebookActivity"
+        android:layout_below="@+id/activity_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rulebook"/>
 </RelativeLayout>
