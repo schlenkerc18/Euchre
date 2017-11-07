@@ -10,4 +10,64 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.hfad.euchreai.GameActivity">
 
+    <ImageView
+        android:id="@+id/iv_deck"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/card_back_red"/>
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:weightSum="5"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_card1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/card_back_red"/>
+
+        <ImageView
+            android:id="@+id/iv_card2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/card_back_red"/>
+
+        <ImageView
+            android:id="@+id/iv_card3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/card_back_red"/>
+
+        <ImageView
+            android:id="@+id/iv_card4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/card_back_red"/>
+
+        <ImageView
+            android:id="@+id/iv_card5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/card_back_red"/>
+
+    </LinearLayout>
+
 </RelativeLayout>
