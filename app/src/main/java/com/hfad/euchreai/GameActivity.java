@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -13,6 +14,8 @@ public class GameActivity extends Activity {
     ImageView iv_deck, iv_card1, iv_card2, iv_card3, iv_card4, iv_card5;
 
     ArrayList<Integer> cards;
+    ArrayList<Integer> players;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +87,7 @@ public class GameActivity extends Activity {
     }
 
     public void assignImage(int card, ImageView image) {
-        switch (card){
+        switch (card) {
             case 109:
                 image.setImageResource(R.drawable.nine_of_clubs);
                 break;
@@ -159,4 +162,22 @@ public class GameActivity extends Activity {
                 break;
         }
     }
+
+
+//    public enum Values {
+//        NINENOTRUMP(1),
+//        TENNOTRUMP(2),
+//        JACKNOTRUMP(3),
+//        QUEENNOTRUMP(4),
+//        KINGNOTRUMP(5),
+//        ACENOTRUMP(10),
+//        NINETRUMP(12),
+//        TENTRUMP(15),
+//        QUEENTRUMP(20),
+//        KINGTRUMP(25),
+//        ACETRUMP(30),
+//        LEFTJACK(31),
+//        RIGHTJACK(35),
+//        NOVALUE(-1);
+//    }
 }
