@@ -163,6 +163,16 @@ public class GameActivity extends Activity {
         }
     }
 
+    private void setUpPlayers() {
+        //need to create player class and add contructor
+       // players.add(new Player("Human"));
+
+        //need to add contstructor inside virtual player
+        //players.add(new VirtualPlayers("AI 1"));
+        //players.add(new VirtualPlayers("AI 2"));
+        //players.add(new VirtualPlayers("AI 3"));
+    }
+
 
 //    public enum Values {
 //        NINENOTRUMP(1),
