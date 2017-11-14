@@ -168,9 +168,9 @@ public class GameActivity extends Activity {
        // players.add(new Player("Human"));
 
         //need to add contstructor inside virtual player
-        //players.add(new VirtualPlayers("AI 1"));
-        //players.add(new VirtualPlayers("AI 2"));
-        //players.add(new VirtualPlayers("AI 3"));
+        //players.add(new VirtualPlayer("AI 1"));
+        //players.add(new VirtualPlayer("AI 2"));
+        //players.add(new VirtualPlayer("AI 3"));
     }
 
 
