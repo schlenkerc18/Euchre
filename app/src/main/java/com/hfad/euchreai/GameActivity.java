@@ -14,7 +14,7 @@ public class GameActivity extends Activity {
     ImageView iv_deck, iv_card1, iv_card2, iv_card3, iv_card4, iv_card5;
 
     ArrayList<Integer> cards;
-    ArrayList<Integer> players;
+    ArrayList<Player> players = new ArrayList<Player>();
 
 
     @Override
@@ -165,7 +165,7 @@ public class GameActivity extends Activity {
 
     private void setUpPlayers() {
         //need to create player class and add contructor
-       // players.add(new Player("Human"));
+       players.add(new Player("Human"));
 
         //need to add contstructor inside virtual player
         //players.add(new VirtualPlayer("AI 1"));
