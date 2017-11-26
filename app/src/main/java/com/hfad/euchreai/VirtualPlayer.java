@@ -1,22 +1,45 @@
 package com.hfad.euchreai;
 
+import java.util.Random;
+import java.util.ArrayList;
+
+
 /**
  * Created by Schlenker18 on 11/6/2017.
  */
 
 public class VirtualPlayer {
-    int player1, player2, player3;
+    public String name;
 
-    public void callTrumpOrPass() {
-        // write code to pass, play, or go alone
+    public VirtualPlayer(String name) {
+        this.name = name;
     }
 
-    public void callTrumpOrPass2() {
-        // write code to choose a suit after trump has been pushed over
+    public Cards playCard(Cards card){
+        return card; //stub function
     }
 
-    public void playCard() {
-        // write code to choose card to play
-        // want to develop simple heuristics before implementing AI
+    public boolean pickUp(Cards kitty){
+
+        Random random = new Random();
+        return random.nextBoolean();
+    }
+
+    public boolean pickUpAsDealer(Cards kitty){
+
+        Random random = new Random();
+        return random.nextBoolean();
+    }
+
+    public boolean call(Cards.SUIT invalid){
+
+        Random random = new Random();
+        return random.nextBoolean();
+    }
+
+    public boolean goAlone(Cards.SUIT trump){
+
+        Random random = new Random();
+        return random.nextBoolean();
     }
 }
