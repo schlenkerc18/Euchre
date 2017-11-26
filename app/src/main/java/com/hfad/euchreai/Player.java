@@ -16,7 +16,7 @@ public class Player {
         hand = new ArrayList<Cards>();
     }
 
-    public ArrayList<Cards> getHand(Cards.SUIT suit) {
+    public ArrayList<Cards> getCardsInHandOfSuit(Cards.SUIT suit) {
 
         ArrayList<Cards> arr = new ArrayList<Cards>();
 
@@ -54,6 +54,17 @@ public class Player {
         return lowestCard;
     }
 
+    public boolean hasCardOfSuit(Cards.SUIT suit) {
+
+        for (Cards c: hand) {
+            if (c.suit == suit) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public boolean[] getPlayableCards(Cards.SUIT leadingSuit, Cards.SUIT trumpSuit) {
         boolean[] playableCards = new boolean[hand.size()];
         boolean sameSuit = false;
@@ -80,5 +91,9 @@ public class Player {
 
         return playableCards;
 
+    }
+
+    public void removeCardFromHand(Cards card) {
+        hand.remove(card);
     }
 }
