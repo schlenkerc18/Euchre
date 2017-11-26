@@ -19,6 +19,30 @@
         android:scaleType="centerInside"
         android:src="@drawable/card_back_red"/>
 
+    <ImageView
+        android:id="@+id/iv_card6"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@+id/iv_deck"
+        android:layout_below="@+id/iv_deck"/>
+
+    <ImageView
+        android:id="@+id/iv_card7"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="1dp"
+        android:layout_below="@+id/iv_deck"/>
+
+    <ImageView
+        android:id="@+id/iv_card8"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@+id/iv_deck"
+        android:layout_below="@+id/iv_card7"/>
+
     <LinearLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"

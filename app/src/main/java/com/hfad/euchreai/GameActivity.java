@@ -11,9 +11,10 @@ import java.util.Collections;
 
 public class GameActivity extends Activity {
 
-    ImageView iv_deck, iv_card1, iv_card2, iv_card3, iv_card4, iv_card5;
+    ImageView iv_deck, iv_card1, iv_card2, iv_card3, iv_card4, iv_card5, iv_card6, iv_card7, iv_card8;
 
     ArrayList<Integer> cards;
+    ArrayList<Cards> cardsPlayed = new ArrayList<Cards>();
     ArrayList<Player> players = new ArrayList<Player>();
 
 
@@ -28,12 +29,18 @@ public class GameActivity extends Activity {
         iv_card3 = (ImageView) findViewById(R.id.iv_card3);
         iv_card4 = (ImageView) findViewById(R.id.iv_card4);
         iv_card5 = (ImageView) findViewById(R.id.iv_card5);
+        iv_card6 = (ImageView) findViewById(R.id.iv_card6);
+        iv_card7 = (ImageView) findViewById(R.id.iv_card7);
+        iv_card8 = (ImageView) findViewById(R.id.iv_card8);
 
         iv_card1.setVisibility(View.INVISIBLE);
         iv_card2.setVisibility(View.INVISIBLE);
         iv_card3.setVisibility(View.INVISIBLE);
         iv_card4.setVisibility(View.INVISIBLE);
         iv_card5.setVisibility(View.INVISIBLE);
+        iv_card6.setVisibility(View.INVISIBLE);
+        iv_card7.setVisibility(View.INVISIBLE);
+        iv_card8.setVisibility(View.INVISIBLE);
 
         cards = new ArrayList<>();
 
@@ -74,12 +81,18 @@ public class GameActivity extends Activity {
                 assignImage(cards.get(2), iv_card3);
                 assignImage(cards.get(3), iv_card4);
                 assignImage(cards.get(4), iv_card5);
+                assignImage(cards.get(5), iv_card6);
+                assignImage(cards.get(6), iv_card7);
+                assignImage(cards.get(7), iv_card8);
 
                 iv_card1.setVisibility(View.VISIBLE);
                 iv_card2.setVisibility(View.VISIBLE);
                 iv_card3.setVisibility(View.VISIBLE);
                 iv_card4.setVisibility(View.VISIBLE);
                 iv_card5.setVisibility(View.VISIBLE);
+                iv_card6.setVisibility(View.VISIBLE);
+                iv_card7.setVisibility(View.VISIBLE);
+                iv_card8.setVisibility(View.VISIBLE);
 
                 Toast.makeText(GameActivity.this, "Cards dealt!", Toast.LENGTH_SHORT).show();
             }
