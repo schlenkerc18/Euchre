@@ -96,4 +96,17 @@ public class Player {
     public void removeCardFromHand(Cards card) {
         hand.remove(card);
     }
+
+    public Cards removeCardFromHand(String cardString){
+        Cards cardToReturn = null;
+        for(int q = 0; q < hand.size(); q++){
+            cardToReturn = hand.get(q);
+            System.out.println("CardToReturn: " + cardToReturn.toString());
+            if(cardToReturn.toString().equals(cardString)){
+                hand.remove(q);
+                return cardToReturn;
+            }
+        }
+        return null;
+    }
 }
