@@ -17,6 +17,7 @@ public class GameActivity extends Activity {
     ArrayList<Cards> cardsPlayed = new ArrayList<Cards>();
     ArrayList<Player> players = new ArrayList<Player>();
     ArrayList<VirtualPlayer> virtualPlayers = new ArrayList<VirtualPlayer>();
+    public int[] score = new int[2];
 
 
     @Override
@@ -25,6 +26,8 @@ public class GameActivity extends Activity {
         setContentView(R.layout.activity_game);
 
         setUpPlayers();
+        score[0] = 0;
+        score[1] = 1;
 
         iv_deck = (ImageView) findViewById(R.id.iv_deck);
         iv_card1 = (ImageView) findViewById(R.id.iv_card1);
@@ -232,6 +235,26 @@ public class GameActivity extends Activity {
                 image.setImageResource(R.drawable.ace_of_spades2);
                 break;
         }
+    }
+
+    public int getWinner() {
+        if (score[0] >= 10) {
+            return 0;
+        }
+
+        if (score[1] >= 10) {
+            return 1;
+        }
+
+        return -1;
+    }
+
+    public boolean gameOver() {
+        if (score[0] >=10 || score[1] >= 10) {
+            return true;
+        }
+
+        return false;
     }
 
     private void setUpPlayers() {
