@@ -19,6 +19,8 @@
         android:scaleType="centerInside"
         android:src="@drawable/card_back_red"/>
 
+
+
     <ImageView
         android:id="@+id/iv_card6"
         android:layout_width="100dp"
@@ -42,6 +44,13 @@
         android:layout_marginTop="10dp"
         android:layout_alignRight="@+id/iv_deck"
         android:layout_below="@+id/iv_card7"/>
+
+    <ImageView
+        android:id="@+id/iv_card9"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/iv_card6"/>
 
     <LinearLayout
         android:id="@+id/layout"
@@ -93,5 +102,24 @@
             android:src="@drawable/card_back_red"/>
 
     </LinearLayout>
+
+    <TextView
+        android:text="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="11dp"
+        android:layout_marginTop="17dp"
+        android:id="@+id/textView" />
+
+    <TextView
+        android:text="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:layout_marginTop="26dp"
+        android:id="@+id/textView2" />
 
 </RelativeLayout>
