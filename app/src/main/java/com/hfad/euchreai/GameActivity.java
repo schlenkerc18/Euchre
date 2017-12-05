@@ -11,17 +11,20 @@ import java.util.Collections;
 
 public class GameActivity extends Activity {
 
-    ImageView iv_deck, iv_card1, iv_card2, iv_card3, iv_card4, iv_card5, iv_card6, iv_card7, iv_card8;
+    ImageView iv_deck, iv_card1, iv_card2, iv_card3, iv_card4, iv_card5, iv_card6, iv_card7, iv_card8, iv_card9;
 
     ArrayList<Integer> cards;
     ArrayList<Cards> cardsPlayed = new ArrayList<Cards>();
     ArrayList<Player> players = new ArrayList<Player>();
+    ArrayList<VirtualPlayer> virtualPlayers = new ArrayList<VirtualPlayer>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        setUpPlayers();
 
         iv_deck = (ImageView) findViewById(R.id.iv_deck);
         iv_card1 = (ImageView) findViewById(R.id.iv_card1);
@@ -32,6 +35,7 @@ public class GameActivity extends Activity {
         iv_card6 = (ImageView) findViewById(R.id.iv_card6);
         iv_card7 = (ImageView) findViewById(R.id.iv_card7);
         iv_card8 = (ImageView) findViewById(R.id.iv_card8);
+        iv_card9 = (ImageView) findViewById(R.id.iv_card9);
 
         iv_card1.setVisibility(View.INVISIBLE);
         iv_card2.setVisibility(View.INVISIBLE);
@@ -41,6 +45,7 @@ public class GameActivity extends Activity {
         iv_card6.setVisibility(View.INVISIBLE);
         iv_card7.setVisibility(View.INVISIBLE);
         iv_card8.setVisibility(View.INVISIBLE);
+        iv_card9.setVisibility(View.INVISIBLE);
 
         cards = new ArrayList<>();
 
@@ -95,6 +100,59 @@ public class GameActivity extends Activity {
                 iv_card8.setVisibility(View.VISIBLE);
 
                 Toast.makeText(GameActivity.this, "Cards dealt!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        iv_card1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                assignImage(cards.get(0), iv_card9);
+                iv_card9.setVisibility(View.VISIBLE);
+                iv_card1.setVisibility(View.INVISIBLE);
+                humanPlayCard(cards.get(0).toString());
+            }
+        });
+
+        iv_card2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                assignImage(cards.get(1), iv_card9);
+                iv_card9.setVisibility(View.VISIBLE);
+                iv_card2.setVisibility(View.INVISIBLE);
+                humanPlayCard(cards.get(1).toString());
+
+            }
+        });
+
+        iv_card3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                assignImage(cards.get(2), iv_card9);
+                iv_card9.setVisibility(View.VISIBLE);
+                iv_card3.setVisibility(View.INVISIBLE);
+                humanPlayCard(cards.get(2).toString());
+
+            }
+        });
+
+        iv_card4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                assignImage(cards.get(3), iv_card9);
+                iv_card9.setVisibility(View.VISIBLE);
+                iv_card4.setVisibility(View.INVISIBLE);
+                humanPlayCard(cards.get(3).toString());
+
+            }
+        });
+
+        iv_card5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                assignImage(cards.get(4), iv_card9);
+                iv_card9.setVisibility(View.VISIBLE);
+                iv_card5.setVisibility(View.INVISIBLE);
+                humanPlayCard(cards.get(4).toString());
             }
         });
     }
@@ -177,14 +235,17 @@ public class GameActivity extends Activity {
     }
 
     private void setUpPlayers() {
-        //need to create player class and add contructor
-       players.add(new Player("Human"));
-
-        //need to add contstructor inside virtual player
-        //players.add(new VirtualPlayer("AI 1"));
-        //players.add(new VirtualPlayer("AI 2"));
-        //players.add(new VirtualPlayer("AI 3"));
+        players.add(new Player("Human"));
+        virtualPlayers.add(new VirtualPlayer("AI 1"));
+        virtualPlayers.add(new VirtualPlayer("AI 2"));
+        virtualPlayers.add(new VirtualPlayer("AI 3"));
     }
+
+    public void humanPlayCard(String cardBeingPlayed) {
+        //removeCardFromHand(cardBeingPlayed);
+    }
+
+
 
 
 //    public enum Values {
