@@ -14,23 +14,27 @@
     <Button
         android:id="@+id/activity_game"
         android:onClick="onGameActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_width="140dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
         android:text="Play!" />
 
     <Button
         android:id="@+id/activity_stats"
         android:onClick="onStatsActivity"
         android:layout_below="@+id/activity_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="140dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
         android:text="Statistics"/>
 
     <Button
         android:id="@+id/activity_rulebook"
         android:onClick="onRulebookActivity"
         android:layout_below="@+id/activity_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="140dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
         android:text="Rulebook"/>
 </RelativeLayout>
