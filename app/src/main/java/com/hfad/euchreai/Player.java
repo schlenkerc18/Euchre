@@ -7,9 +7,8 @@ import java.util.ArrayList;
  */
 
 public class Player {
-
     public String name;
-    public ArrayList<Cards> hand;
+    public static ArrayList<Cards> hand;
 
     public Player(String name) {
         this.name = name;
@@ -29,6 +28,26 @@ public class Player {
         return arr;
     }
 
+    public Cards getHighestValueCardOfSuit(Cards.SUIT suit) {
+        Cards highestCard = null;
+        for (Cards c: hand) {
+            if (c.suit == suit && (highestCard == null || c.value > highestCard.value)) {
+                highestCard = c;
+            }
+        }
+        return highestCard;
+    }
+
+    public Cards getLowestValueCardOfSuit(Cards.SUIT suit) {
+        Cards lowestCard = null;
+        for (Cards c: hand) {
+            if (c.suit == suit && (lowestCard == null || c.value < lowestCard.value)) {
+                lowestCard = c;
+            }
+        }
+        return lowestCard;
+    }
+
     // used for the leading card
     public Cards getHighestValueCard() {
         Cards highestCard = null;
@@ -42,6 +61,7 @@ public class Player {
         return highestCard;
     }
 
+    //used for playing off
     public Cards getLowestValueCard() {
         Cards lowestCard = null;
 
