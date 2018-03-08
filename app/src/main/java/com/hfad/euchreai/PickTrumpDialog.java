@@ -29,6 +29,7 @@ public class PickTrumpDialog extends Dialog implements android.view.View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pick_trump_dialog);
+        setCancelable(false);
 
         for (int i = 0; i < 3; i++) {
             if (GameSetUp.currentRound.callableSuits[i] == Cards.SUIT.HEARTS) {

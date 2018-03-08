@@ -29,6 +29,7 @@ public class PassPickUpDialog extends Dialog implements android.view.View.OnClic
         setContentView(R.layout.pass_pickup_dialog);
         turnedUpCard = (ImageView) findViewById(R.id.turned_up_card);
         GameActivity.assignImage(Round.turnedUpCard.toString(), turnedUpCard);
+        setCancelable(false);
 
         pass = (Button) findViewById(R.id.pass_button2);
         pickUp = (Button) findViewById(R.id.pickup_button);
