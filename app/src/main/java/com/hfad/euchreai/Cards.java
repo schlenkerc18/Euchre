@@ -21,6 +21,64 @@ public class Cards {
         this.value = value;
     }
 
+    @Override
+    public String toString()
+    {
+        String ret = "Invalid";
+        switch (this.value)
+        {
+            case 9:
+                ret = "Nine";
+                break;
+            case 10:
+                ret = "Ten";
+                break;
+            case 11:
+                ret = "Jack";
+                break;
+            case 12:
+                ret = "Queen";
+                break;
+            case 13:
+                ret = "King";
+                break;
+            case 14:
+                ret = "Ace";
+                break;
+            default:
+                ret = "NOT VALID";
+        }
+        ret += " of ";
+        switch (this.suit)
+        {
+            case CLUBS:
+                ret+="Clubs";
+                break;
+            case DIAMONDS:
+                ret+="Diamonds";
+                break;
+            case HEARTS:
+                ret+="Hearts";
+                break;
+            default:
+                ret+="Spades";
+                break;
+        }
+        return ret;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        Cards otherCard = (Cards) obj;
+        return this.value == otherCard.value && this.suit == otherCard.suit;
+    }
+
     public static SUIT getSameColorSuit(SUIT trump) {
         SUIT sameColor = SUIT.HEARTS;
         switch(trump) {
@@ -62,36 +120,34 @@ public class Cards {
             }
         } else if (this.suit == sameColor && this.value == 11){
                 return 11;
-          }
-            switch(this.value){
-                case 14: //random ace
-                    return 6;
-                case 13: //random king
-                    return 2;
-            }
-            return 0;
+        }
+        switch(this.value){
+            case 14: //random ace
+                return 6;
+            case 13: //random king
+                return 2;
+        }
+        return 0;
     }
 
     public int cardValue(SUIT trump, SUIT lead) {
         SUIT sameColor= getSameColorSuit(trump);
 
-        if (this.suit == trump){
+        if (this.suit == trump) {
             if(this.value == 11) //Jack of trump suit
                 return 44;
             return this.value + 28;
         }
-        if ((this.suit == sameColor) && (this.value == 11)) //Jack of same color
-        {
+        if ((this.suit == sameColor) && (this.value == 11)) {//Jack of same color
             return 43;
         }
-        if (this.suit == lead)
-        {
+        if (this.suit == lead) {
             return this.value + 14;
         }
         return this.value;
     }
 
-    public int cardValueNotLead(SUIT trump) {
+    public int cardValueNoLead(SUIT trump) {
         SUIT sameColor= getSameColorSuit(trump);
 
         if (this.suit == trump){
@@ -107,7 +163,7 @@ public class Cards {
     }
 
     public boolean greater(Cards other, SUIT trump, SUIT lead) {
-        
+
         return this.cardValue(trump, lead) > other.cardValue(trump, lead);
     }
 }
