@@ -8,17 +8,16 @@ import java.util.ArrayList;
  * Created by Schlenker18 on 11/6/2017.
  */
 
-public class VirtualPlayer {
+public class VirtualPlayer extends SmartVirtualPlayer{
     public String name;
-    public ArrayList<Cards> hand;
+    public static ArrayList<Cards> hand;
 
     public VirtualPlayer(String name) {
-        this.name = name;
-        hand = new ArrayList<Cards>();
+        super(name);
     }
 
-    public Cards playCard(Cards card){
-        boolean[] playableTrueFalse = this.getPlayableCards(leadingSuit, trump);
+    public Cards playCard(Cards card){  // need to make static???????????????????????/
+        boolean[] playableTrueFalse = this.getPlayableCards(Trick.leadingSuit, Trick.trump);
         ArrayList<Integer> playableCards = new ArrayList<Integer>();
         for (int i = 0 ; i < playableTrueFalse.length;i++)
         {
@@ -40,19 +39,35 @@ public class VirtualPlayer {
     }
 
     public boolean pickUpAsDealer(Cards kitty){
-
         Random random = new Random();
         return random.nextBoolean();
     }
 
     public boolean call(Cards.SUIT invalid){
-
         Random random = new Random();
         return random.nextBoolean();
     }
 
-    public boolean goAlone(Cards.SUIT trump){
+    public Cards discardDecider(Cards kitty) {
+        Random random = new Random();
+        int ind = random.nextInt(6);
+        if (ind == 5) {
+            return kitty;
+        } else {
+            return this.hand.get(ind);
+        }
+    }
 
+    public Cards.SUIT trumpDecider(Cards.SUIT invalid) {
+        Cards.SUIT ret = invalid;
+        while (ret == invalid) {
+            Random random = new Random();
+            ret = Cards.SUIT.values()[random.nextInt(4)];
+        }
+        return ret;
+    }
+
+    public boolean goAlone(Cards.SUIT trump){
         Random random = new Random();
         return random.nextBoolean();
     }
