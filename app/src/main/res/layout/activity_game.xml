@@ -27,14 +27,16 @@
         android:layout_marginBottom="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Left Player"/>
+        android:text="Left Player"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/topPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Partner"/>
+        android:text="Partner"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/rightPlayer"
@@ -44,7 +46,8 @@
         android:layout_marginBottom="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Right Player"/>
+        android:text="Right Player"
+        android:textColor="@color/white"/>
 
 
     <ImageView
@@ -85,7 +88,7 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:weightSum="5"
+        android:weightSum="6"
         android:orientation="horizontal">
 
         <ImageView
@@ -138,6 +141,15 @@
             android:scaleType="centerInside"
             android:src="@drawable/card_back_red"/>
 
+        <ImageView
+            android:id="@+id/iv_card10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_weight="1"
+            android:scaleType="centerInside" />
+
     </LinearLayout>
 
     <TextView
@@ -146,7 +158,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/tricks"
@@ -154,7 +167,8 @@
         android:layout_marginRight="10dp"
         android:text="Tricks"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/yourTricks"
@@ -164,7 +178,8 @@
         android:layout_below="@+id/tricks"
         android:layout_marginTop="2dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/compTricks"
@@ -174,7 +189,8 @@
         android:layout_marginTop="5dp"
         android:layout_below="@+id/yourTricks"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/yourScore"
@@ -185,7 +201,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="11dp"
-        android:layout_marginTop="22dp" />
+        android:layout_marginTop="22dp"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/compScore"
@@ -194,7 +211,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/yourScore"
         android:layout_alignStart="@+id/yourScore"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:textColor="@color/white"/>
 
 
 </RelativeLayout>
