@@ -153,6 +153,35 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/cardToDiscard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layoutLinear"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/trump"
+        android:layout_toRightOf="@+id/layoutLinear"
+        android:layout_marginLeft="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:text="Trump: "
+        android:textColor="@color/white"/>
+
+    <ImageView
+        android:id="@+id/trumpPicture"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/trump"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+
+    <TextView
         android:id="@+id/score"
         android:text="Score"
         android:layout_alignParentTop="true"
