@@ -1,5 +1,7 @@
 package com.hfad.euchreai;
 
+import android.util.Log;
+
 /**
  * Created by Schlenker18 on 11/13/2017.
  */
@@ -163,7 +165,8 @@ public class Cards {
     }
 
     public boolean greater(Cards other, SUIT trump, SUIT lead) {
-
+        Log.v("---Cards166---", "this: " + this);
+        Log.v("---Cards167---", "other: " + other);
         return this.cardValue(trump, lead) > other.cardValue(trump, lead);
     }
 }
