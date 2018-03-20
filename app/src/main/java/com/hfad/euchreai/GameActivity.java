@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,15 +15,23 @@ import java.util.ArrayList;
 
 import static com.hfad.euchreai.GameSetUp.currentRound;
 import static com.hfad.euchreai.GameSetUp.players;
+import static com.hfad.euchreai.GameSetUp.score;
 
 public class GameActivity extends Activity {
 
     static ImageView iv_deck, iv_card1, iv_card2, iv_card3, iv_card4, iv_card5, iv_card6, iv_card7, iv_card8, iv_card9, iv_card10, trumpPicture;
-    static TextView cardToDiscard;
+    static TextView cardToDiscard, yourTricks, compTricks, yourScore, compScore;
+    static Button pass_button3, pickup_button2;
     public static int[] score = new int[2];
     public static int[] tricks = new int[2];
     public static ArrayList<Cards> humanHand;
 
+    /*
+        -creates an instance of a new Game
+        -sets up all buttons, textviews, imageviews, initializes scores
+        -assigns imagages to player Hand
+        -calls setUpInitialRound()
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +45,25 @@ public class GameActivity extends Activity {
         Log.v("--GameActivity30--", "ComHand2: " + GameSetUp.getComHand2());
         Log.v("--GameActivity31--", "ComHand3: " + GameSetUp.getComHand3());
 
-
+        //setUp buttons for picking up and passing
+        pickup_button2 = (Button) findViewById(R.id.pickup_button2);
+        pass_button3 = (Button) findViewById(R.id.pass_button3);
+        pickup_button2.setVisibility(View.INVISIBLE);
+        pass_button3.setVisibility(View.INVISIBLE);
 
         humanHand = GameSetUp.getHumanHand();
         final ArrayList<Cards> computerHand1 = GameSetUp.getComHand1();
         final ArrayList<Cards> computerHand2 = GameSetUp.getComHand2();
         final ArrayList<Cards> computerHand3 = GameSetUp.getComHand3();
 
+        //setting up score and trick id's
+        yourScore = (TextView) findViewById(R.id.yourScore);
+        compScore = (TextView) findViewById(R.id.compScore);
+        yourTricks = (TextView) findViewById(R.id.yourTricks);
+        compTricks = (TextView) findViewById(R.id.compTricks);
 
+
+        //why did I do this?
         cardToDiscard = (TextView) findViewById(R.id.cardToDiscard);
 
         iv_deck = (ImageView) findViewById(R.id.iv_deck);
@@ -105,6 +125,11 @@ public class GameActivity extends Activity {
         Log.v("--GameActivity93--", "trump: " + Round.currentTrick.trump);
     }
 
+    /*
+        sets Up dialog when user presses this button
+        -User will have option to stay in game or
+        leave without saving
+     */
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -128,6 +153,9 @@ public class GameActivity extends Activity {
         alert.show();
     }
 
+    /*
+        takes string as input and assigns an image based on string
+     */
     public static void assignImage(String card, ImageView image) {
         switch (card) {
             case "Nine of Clubs":
@@ -205,10 +233,29 @@ public class GameActivity extends Activity {
         }
     }
 
-    public static void showAIcards() {
-
+    /*
+        funtion to show User that AI has played card
+     */
+    public static void showAIPlaycard(String cardToShow) {
+        int playerIndex = currentRound.currentTrick.currentPlayer;
+        for (int i = 0; i < 4; i++) {
+            if (playerIndex == 1) {
+                //screen shows left player playing card
+                iv_card6.setVisibility(View.VISIBLE);
+                assignImage(cardToShow, iv_card6);
+            } else if (playerIndex == 2) {
+                //screen shows top player playing card
+                iv_card7.setVisibility(View.VISIBLE);
+                assignImage(cardToShow, iv_card7);
+            } else {
+                //screen shows right player playing card
+                iv_card8.setVisibility(View.VISIBLE);
+                assignImage(cardToShow, iv_card8);
+            }
+        }
     }
 
+    //this function shows the Trump for the round on the bottom right of screen
     public static void showTrump(Cards.SUIT trump) {
         if (trump == Cards.SUIT.CLUBS) {
             trumpPicture.setImageResource(R.drawable.clubs_icon);
@@ -227,6 +274,12 @@ public class GameActivity extends Activity {
         }
     }
 
+    /*
+        - calls humanPlayCard which will remove card from hand
+        - if game is finished, it report result to user
+        - calls update game
+        - calls setUpInitialRound
+     */
     public static void cardPlayed(String cardText) {
         GameSetUp.humanPlayCard(cardText);
         updateGame();
@@ -243,18 +296,23 @@ public class GameActivity extends Activity {
         setUpIntitialRound();
     }
 
+    /*
+        -if game is not in preGameState, calls updateGame()
+        -if dealerNeedsToDiscard, calls setUpDiscard()
+        -if not trump has been called by computer, will prompt user to pickUp or pass
+     */
     private static void setUpIntitialRound() {
-        Log.v("----GameActivity240----", "Initial Round ");
+        Log.v("----GameActivity269----", "Initial Round ");
         //Toast.makeText(GameActivity.this, "Initial Round", Toast.LENGTH_LONG).show();
 
         if(!GameSetUp.currentRound.isInPreGameState){
-            Log.v("--GUI--", "Update");
+            Log.v("--GameActivity273--", "Update");
             updateGame();
             return;
         }
 
         else if(GameSetUp.currentRound.dealerNeedsToDiscard){
-            Log.v("---GameActivity250---", "Dealer discard");
+            Log.v("---GameActivity279---", "Dealer discard");
             setUpDiscard();
             return;
         }
@@ -262,12 +320,45 @@ public class GameActivity extends Activity {
         boolean[] disabled = {false,false,false,false,false};
         setPlayersCardsClickable(disabled);
 
+        if (!currentRound.isCurrentPlayerAI() && currentRound.trump == null) {
+            pickup_button2.setVisibility(View.VISIBLE);
+            pass_button3.setVisibility(View.VISIBLE);
+            pickup_button2.setText("Pick Up");
+            pass_button3.setText("Pass");
+
+            pass_button3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    GameSetUp.humanPreRoundPass();
+                    Log.v("--GameActivity297--", "User passed");
+                    pickup_button2.setVisibility(View.INVISIBLE);
+                    pass_button3.setVisibility(View.INVISIBLE);
+                }
+            });
+
+            pickup_button2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    GameSetUp.humanPreRoundPass();
+                    Log.v("--GameActivity306--", "User picked up");
+                    pickup_button2.setVisibility(View.INVISIBLE);
+                    pass_button3.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
         // need a way to tell dealer to pass or pick up
         //PassPickUpDialog ppd = new PassPickUpDialog(GameActivity.this);
         //ppd.show();
     }
 
+    /*
+        - Sets played cards to invisible
+        - updates scores if Round is over
+        - updates tricks if hands have been played
+        - sets humanPlayable cards to clickable
+     */
     private static void updateGame() {
+        Log.v("--GameActivity319--", "Game Being Updated");
         String trump = "";
         if(GameSetUp.currentRound.trump == null) {
             trump = "trumpNotSet";
@@ -277,20 +368,32 @@ public class GameActivity extends Activity {
             trump = GameSetUp.currentRound.trump.toString();
         }
 
+        iv_card6.setVisibility(View.INVISIBLE);
+        iv_card7.setVisibility(View.INVISIBLE);
+        iv_card8.setVisibility(View.INVISIBLE);
+        iv_card9.setVisibility(View.INVISIBLE);
+
         score[0] = GameSetUp.score[0];
+        yourScore.setText(Integer.toString(score[0]));
         score[1] = GameSetUp.score[1];
+        compScore.setText(Integer.toString(score[1]));
 
         tricks[0] = GameSetUp.currentRound.trickCount[0];
+        yourTricks.setText(Integer.toString(tricks[0]));
         tricks[1] = GameSetUp.currentRound.trickCount[1];
+        compTricks.setText(Integer.toString(tricks[1]));
 
         boolean[] cardsClickable = {false, false, false, false, false};
         if (!GameSetUp.currentRound.isInPreGameState && GameSetUp.currentRound.outPlayer != 0) {
-            cardsClickable = GameSetUp.getPlayableCardsForHuman();
+            //cardsClickable = GameSetUp.getPlayableCardsForHuman();
         }
 
         setPlayersCardsClickable(cardsClickable);
     }
 
+    /*
+        print function to show which player is dealing
+     */
     private String printDealer() {
         String out = "";
         switch(GameSetUp.currentRound.dealer){
@@ -312,8 +415,11 @@ public class GameActivity extends Activity {
         return out;
     }
 
+    /*
+        Sets UI to allow user to discard a card
+     */
     public static void setUpDiscard() {
-        Log.v("--GameActivity312--", "outPlayer: " + Round.outPlayer);
+        Log.v("--GameActivity328--", "outPlayer: " + Round.outPlayer);
         if (GameSetUp.currentRound.outPlayer == 0){
             GameSetUp.dealerDiscardForRoundStart(GameSetUp.currentRound.turnedUpCard.toString());
             updateGame();
@@ -332,10 +438,12 @@ public class GameActivity extends Activity {
 
         cardToDiscard.setText("Select a Card to Discard");
         showDiscard();
-
-        // need way to setUpDiscard without dialog
     }
 
+    /*
+        resets the humanHand to include the kitty
+        and exclude the discard card
+     */
     public static ArrayList<Cards> resetHumanHand() {
         ArrayList<Cards> newHand = new ArrayList<Cards>();
 
@@ -347,14 +455,18 @@ public class GameActivity extends Activity {
         return newHand;
     }
 
+    /*
+        the selected card will be discarded from the players hand
+        and will be replaced by the kitty.  The kitty will then be
+        added to the players hand
+     */
     public static void showDiscard() {
-        //need to reset human hand
-
         iv_card1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_card1.setVisibility(View.INVISIBLE);
-                // need to set this card to kitty
+                //iv_card1.setVisibility(View.INVISIBLE);
+                iv_card10.setVisibility(View.INVISIBLE);
+                assignImage(Round.turnedUpCard.toString(), iv_card1);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(humanHand.get(0).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
                 resetHumanHand();
@@ -366,13 +478,18 @@ public class GameActivity extends Activity {
                 iv_card5.setClickable(false);
                 iv_card10.setClickable(false);
                 cardToDiscard.setText("");
+                GameSetUp.currentRound.currentTrick.currentPlayer++;
+                GameSetUp.currentRound.isInPreGameState = false;
+                GameSetUp.makeGameReadyForHuman();
             }
         });
 
         iv_card2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_card2.setVisibility(View.INVISIBLE);
+                //iv_card2.setVisibility(View.INVISIBLE);
+                iv_card10.setVisibility(View.INVISIBLE);
+                assignImage(Round.turnedUpCard.toString(), iv_card2);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(humanHand.get(1).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
                 //resetHumanHand();
@@ -384,13 +501,18 @@ public class GameActivity extends Activity {
                 iv_card5.setClickable(false);
                 iv_card10.setClickable(false);
                 cardToDiscard.setText("");
+                GameSetUp.currentRound.currentTrick.incrementTurn();
+                GameSetUp.currentRound.isInPreGameState = false;
+                GameSetUp.makeGameReadyForHuman();
             }
         });
 
         iv_card3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_card3.setVisibility(View.INVISIBLE);
+                //iv_card3.setVisibility(View.INVISIBLE);
+                iv_card10.setVisibility(View.INVISIBLE);
+                assignImage(Round.turnedUpCard.toString(), iv_card3);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(humanHand.get(2).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
                 //resetHumanHand();
@@ -402,13 +524,18 @@ public class GameActivity extends Activity {
                 iv_card5.setClickable(false);
                 iv_card10.setClickable(false);
                 cardToDiscard.setText("");
+                GameSetUp.currentRound.currentTrick.incrementTurn();
+                GameSetUp.currentRound.isInPreGameState = false;
+                GameSetUp.makeGameReadyForHuman();
             }
         });
 
         iv_card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_card4.setVisibility(View.INVISIBLE);
+                //iv_card4.setVisibility(View.INVISIBLE);
+                iv_card10.setVisibility(View.INVISIBLE);
+                assignImage(Round.turnedUpCard.toString(), iv_card4);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(humanHand.get(3).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
                 //resetHumanHand();
@@ -420,13 +547,18 @@ public class GameActivity extends Activity {
                 iv_card5.setClickable(false);
                 iv_card10.setClickable(false);
                 cardToDiscard.setText("");
+                GameSetUp.currentRound.currentTrick.incrementTurn();
+                GameSetUp.currentRound.isInPreGameState = false;
+                GameSetUp.makeGameReadyForHuman();
             }
         });
 
         iv_card5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iv_card5.setVisibility(View.INVISIBLE);
+                //iv_card5.setVisibility(View.INVISIBLE);
+                iv_card10.setVisibility(View.INVISIBLE);
+                assignImage(Round.turnedUpCard.toString(), iv_card5);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(humanHand.get(4).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
                 //resetHumanHand();
@@ -438,6 +570,9 @@ public class GameActivity extends Activity {
                 iv_card5.setClickable(false);
                 iv_card10.setClickable(false);
                 cardToDiscard.setText("");
+                GameSetUp.currentRound.currentTrick.incrementTurn();
+                GameSetUp.currentRound.isInPreGameState = false;
+                GameSetUp.makeGameReadyForHuman();
             }
         });
 
@@ -452,10 +587,16 @@ public class GameActivity extends Activity {
                 iv_card5.setClickable(false);
                 iv_card10.setClickable(false);
                 cardToDiscard.setText("");
+                GameSetUp.currentRound.currentTrick.incrementTurn();
+                GameSetUp.currentRound.isInPreGameState = false;
+                GameSetUp.makeGameReadyForHuman();
             }
         });
     }
 
+    /*
+        sets up dialog for user to pick trump
+     */
     private void pickTrump(){
         boolean[] disabled = {false,false,false,false,false};
         setPlayersCardsClickable(disabled);
@@ -477,8 +618,8 @@ public class GameActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     assignImage(humanHand.get(0).toString(), iv_card9);
-                    cardPlayed(humanHand.get(0).toString());
                     iv_card9.setVisibility(View.VISIBLE);
+                    cardPlayed(humanHand.get(0).toString());
                     iv_card1.setVisibility(View.INVISIBLE);
                 }
             });
@@ -489,8 +630,8 @@ public class GameActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     assignImage(humanHand.get(1).toString(), iv_card9);
-                    cardPlayed(humanHand.get(1).toString());
                     iv_card9.setVisibility(View.VISIBLE);
+                    cardPlayed(humanHand.get(1).toString());
                     iv_card2.setVisibility(View.INVISIBLE);
                 }
             });
@@ -501,8 +642,8 @@ public class GameActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     assignImage(humanHand.get(2).toString(), iv_card9);
-                    cardPlayed(humanHand.get(2).toString());
                     iv_card9.setVisibility(View.VISIBLE);
+                    cardPlayed(humanHand.get(2).toString());
                     iv_card3.setVisibility(View.INVISIBLE);
                 }
             });
@@ -513,8 +654,8 @@ public class GameActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     assignImage(humanHand.get(3).toString(), iv_card9);
-                    cardPlayed(humanHand.get(3).toString());
                     iv_card9.setVisibility(View.VISIBLE);
+                    cardPlayed(humanHand.get(3).toString());
                     iv_card4.setVisibility(View.INVISIBLE);
                 }
             });
@@ -525,8 +666,8 @@ public class GameActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     assignImage(humanHand.get(4).toString(), iv_card9);
-                    cardPlayed(humanHand.get(4).toString());
                     iv_card9.setVisibility(View.VISIBLE);
+                    cardPlayed(humanHand.get(4).toString());
                     iv_card5.setVisibility(View.INVISIBLE);
                 }
             });

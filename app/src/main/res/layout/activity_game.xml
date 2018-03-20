@@ -52,33 +52,33 @@
 
     <ImageView
         android:id="@+id/iv_card6"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignRight="@+id/iv_deck"
-        android:layout_below="@+id/iv_deck"/>
+        android:layout_toLeftOf="@+id/iv_card9"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="80dp" />
 
     <ImageView
         android:id="@+id/iv_card7"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="1dp"
-        android:layout_below="@+id/iv_deck"/>
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/iv_card9"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/topPlayer"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="1dp" />
 
     <ImageView
         android:id="@+id/iv_card8"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignRight="@+id/iv_deck"
-        android:layout_below="@+id/iv_card7"/>
+        android:layout_toRightOf="@+id/iv_card9"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="80dp" />
 
     <ImageView
         android:id="@+id/iv_card9"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/layoutLinear"/>
 
@@ -151,6 +151,20 @@
             android:scaleType="centerInside" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/pass_button3"
+        android:layout_above="@id/layoutLinear"
+        android:layout_centerHorizontal="true"
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
+
+    <Button
+        android:id="@+id/pickup_button2"
+        android:layout_above="@+id/layoutLinear"
+        android:layout_toRightOf="@id/pass_button3"
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
 
     <TextView
         android:id="@+id/cardToDiscard"
