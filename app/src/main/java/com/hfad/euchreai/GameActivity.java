@@ -230,6 +230,8 @@ public class GameActivity extends Activity {
             case "Ace of Spades":
                 image.setImageResource(R.drawable.ace_of_spades2);
                 break;
+            case "Back of Card":
+                image.setImageResource(R.drawable.card_back_red);
         }
     }
 
@@ -331,6 +333,7 @@ public class GameActivity extends Activity {
                 public void onClick(View view) {
                     GameSetUp.humanPreRoundPass();
                     Log.v("--GameActivity297--", "User passed");
+                    showTrump(Round.currentTrick.trump);
                     pickup_button2.setVisibility(View.INVISIBLE);
                     pass_button3.setVisibility(View.INVISIBLE);
                 }
@@ -339,8 +342,9 @@ public class GameActivity extends Activity {
             pickup_button2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    GameSetUp.humanPreRoundPass();
+                    GameSetUp.humanPreRoundCall();
                     Log.v("--GameActivity306--", "User picked up");
+                    showTrump(Round.turnedUpCard.suit);
                     pickup_button2.setVisibility(View.INVISIBLE);
                     pass_button3.setVisibility(View.INVISIBLE);
                 }
