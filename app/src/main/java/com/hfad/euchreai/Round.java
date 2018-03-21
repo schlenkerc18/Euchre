@@ -14,7 +14,7 @@ public class Round {
     public LinkedList<Cards> deck = new LinkedList<Cards>();
     public ArrayList<Cards> allCards;
     public static ArrayList<Player> players;
-    public Trick currentTrick;
+    public static Trick currentTrick;
     public static ArrayList<Trick> trickHistory = new ArrayList<Trick>();
     public static Cards.SUIT trump;
     public int[] trickCount = new int[2];
@@ -25,7 +25,7 @@ public class Round {
     public boolean isInPreGameState = true;
     public boolean isCardTurnedUp = true;
     public boolean isStickTheDealer = true;
-    public boolean dealerNeedsToDiscard = false;
+    public static boolean dealerNeedsToDiscard = false;
     public static int outPlayer = -1;
 
     public Round(ArrayList<Cards> allCardsIn, ArrayList<Player> playersIn, int dealerIn){
@@ -34,11 +34,13 @@ public class Round {
         shuffle();
         deal();
         turnedUpCard = deck.pop();
-        Log.v("-----test------", "TurnedUpCard " + turnedUpCard.toString());
+        Log.v("--Round37--", "TurnedUpCard " + turnedUpCard.toString());
         fillCallableSuits();
 
         dealer = dealerIn;
+        Log.v("--Round41--", "Dealer index: " + dealer);
         currentTrick = new Trick(dealer + 1,trump);
+        //Log.v("--Round43--", "Dealer index after new Trick: " + dealer);
         trickCount[0] = 0;
         trickCount[1] = 0;
     }
@@ -69,6 +71,7 @@ public class Round {
         if (currentTrick.currentPlayer == dealer) {
             if (isCardTurnedUp) {
                 isCardTurnedUp = false;
+                GameActivity.assignImage("Back of Card", GameActivity.iv_deck);
             }
         }
 
@@ -79,7 +82,7 @@ public class Round {
     }
 
     public boolean isCurrentPlayerAI() {
-        return (players.get(currentTrick.currentPlayer) instanceof VirtualPlayer);
+        return (players.get(currentTrick.currentPlayer) instanceof SmartVirtualPlayer);
     }
 
     // used when the card is turned up
@@ -88,6 +91,7 @@ public class Round {
         currentTrick.trump = trump;
         currentTrick.currentPlayer = dealer;
         Player p = players.get(dealer);
+        Log.v("--Round91--", "CardTurnedUP" + trump);
 
         if (p instanceof SmartVirtualPlayer) {
             SmartVirtualPlayer svp = ((SmartVirtualPlayer) p);
@@ -101,6 +105,7 @@ public class Round {
         }
         else {
             dealerNeedsToDiscard = true;
+            Log.v("--Round107--", "Dealer needs to discard: " + dealerNeedsToDiscard);
         }
     }
 
@@ -109,6 +114,7 @@ public class Round {
         trump = toBeTrump;
         currentTrick.trump = trump;
         prepareForRoundStart();
+        Log.v("--Round113--", "card turned down:" + trump);
     }
 
     private void prepareForRoundStart() {
@@ -140,7 +146,7 @@ public class Round {
     }
 
     public void playCard(Cards c) {
-        System.out.println("playing...");
+        System.out.println("playing...Round148...");
         currentTrick.playCardForCurrentPlayer(c);
         if (currentTrick.isOver()) {
             trickCount[currentTrick.currentWinner % 2] ++;
@@ -201,10 +207,27 @@ public class Round {
 
     public void deal(){
         for (int i = 0; i < 5; i++){
-            for(int j = 0; j < 4; j++){
+            for (int j = 0; j < 4; j++) {
                 players.get(j).hand.add(draw());
             }
         }
+
+        Log.v("--Round224--", "human reference: " + players.get(0).hand);
+        Log.v("--Round224--", "svp1 reference: " + players.get(1).hand);
+        Log.v("--Round224--", "svp1 reference: " + players.get(2).hand);
+        Log.v("--Round224--", "svp1 reference: " + players.get(3).hand);
+
+
+//        Log.v("--Round220--", "human hand: " + human.hand);
+//        Log.v("--Round220--", "ai1 hand: " + ai1.hand);
+//        Log.v("--Round220--", "ai2 hand: " + ai2.hand);
+//        Log.v("--Round220--", "ai3 hand: " + ai3.hand);
+//
+//
+//        Log.v("--Round213--", "Player 0 hand size: " + human.hand.size());
+//        Log.v("--Round214--", "Player 1 hand size: " + ai1.hand.size());
+//        Log.v("--Round215--", "Player 2 hand size: " + ai2.hand.size());
+//        Log.v("--Round216--", "Player 3 hand size: " + ai3.hand.size());
     }
 
     public Cards draw(){
