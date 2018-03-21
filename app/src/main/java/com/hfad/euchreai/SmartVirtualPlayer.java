@@ -15,7 +15,7 @@ public class SmartVirtualPlayer extends Player {
     }
 
     public Cards getCardToPlay(Trick trick) {
-        Cards cardToPlayMax = null;
+        Cards cardToPlayMax = new NullCard();
         Cards cardToPlayMin = null;
         ArrayList<Cards> choices = new ArrayList<Cards>();
         boolean[] choiceArray = this.getPlayableCards(trick.leadingSuit, trick.trump);
@@ -24,7 +24,7 @@ public class SmartVirtualPlayer extends Player {
                 choices.add(this.hand.get(i));
             }
 
-        Log.v("----test----", "choices: " + choices.toString());
+        Log.v("--SVP27--", "choices: " + choices.toString());
 
         if (trick.leadingSuit == null){
             for (int i = 0; i < choices.size(); i++){
@@ -35,6 +35,8 @@ public class SmartVirtualPlayer extends Player {
             this.removeCardFromHand(cardToPlayMax);
             return cardToPlayMax;
         }
+
+        Log.v("--SVP39--", "Choices.size(): " + choices.size());
 
         for (int i = 0; i < choices.size(); i++){
             if (cardToPlayMin == null) {
@@ -47,6 +49,8 @@ public class SmartVirtualPlayer extends Player {
                 cardToPlayMin = choices.get(i);
             }
         }
+
+        Log.v("--SVP--", "CardToPlayMax: " + cardToPlayMax);
 
         if (cardToPlayMax.cardValue(trick.trump, trick.leadingSuit) > trick.currentWinningCard.cardValue(trick.trump, trick.leadingSuit)){
             this.removeCardFromHand(cardToPlayMax);
