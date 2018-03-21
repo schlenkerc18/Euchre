@@ -1,5 +1,7 @@
 package com.hfad.euchreai;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -8,11 +10,11 @@ import java.util.ArrayList;
 
 public class Player {
     public String name;
-    public static ArrayList<Cards> hand;
+    public ArrayList<Cards> hand;
 
     public Player(String name) {
         this.name = name;
-        hand = new ArrayList<Cards>();
+        this.hand = new ArrayList<Cards>();
     }
 
     public ArrayList<Cards> getCardsInHandOfSuit(Cards.SUIT suit) {
@@ -87,12 +89,19 @@ public class Player {
 
     public boolean[] getPlayableCards(Cards.SUIT leadingSuit, Cards.SUIT trumpSuit) {
         boolean[] playableCards = new boolean[hand.size()];
+        Log.v("--Player--", "Size of Hand: " + (hand.size()));
         boolean sameSuit = false;
         Cards.SUIT sameColorAsTrump = Cards.getSameColorSuit(trumpSuit);
         Cards c;
 
+        Log.v("---Player96---", "leadingSuit: " + leadingSuit);
+
         for (int i = 0; i < hand.size(); i++) {
             c = hand.get(i);
+            // this is getting 20 cards, only want 5
+            //Log.v("---Player100---", "hand(i): " + hand.get(i));
+
+            //Log.v("---Player102---", "c.suit: " + c.suit);
 
             if ((c.suit == leadingSuit && !(c.suit == sameColorAsTrump && c.value == 11))
                     || (leadingSuit == trumpSuit && c.suit == sameColorAsTrump && c.value == 11)) {
@@ -121,8 +130,9 @@ public class Player {
         Cards cardToReturn = null;
         for(int q = 0; q < hand.size(); q++){
             cardToReturn = hand.get(q);
-            System.out.println("CardToReturn: " + cardToReturn.toString());
+            System.out.println("CardToReturn...Player131: " + cardToReturn.toString());
             if(cardToReturn.toString().equals(cardString)){
+                Log.v("---Player133---", "cardBeingRemoved: " + hand.get(q));
                 hand.remove(q);
                 return cardToReturn;
             }

@@ -41,9 +41,9 @@ public class GameActivity extends Activity {
 
         Log.v("--GameActivity27--", "Hands " + GameSetUp.getAllHands());
         Log.v("--GameActivity28--", "Hand " + GameSetUp.getHumanHand());
-        Log.v("--GameActivity29--", "ComHand1: " + GameSetUp.getComHand1());
-        Log.v("--GameActivity30--", "ComHand2: " + GameSetUp.getComHand2());
-        Log.v("--GameActivity31--", "ComHand3: " + GameSetUp.getComHand3());
+        //Log.v("--GameActivity29--", "ComHand1: " + GameSetUp.getComHand1());
+        //Log.v("--GameActivity30--", "ComHand2: " + GameSetUp.getComHand2());
+        //Log.v("--GameActivity31--", "ComHand3: " + GameSetUp.getComHand3());
 
         //setUp buttons for picking up and passing
         pickup_button2 = (Button) findViewById(R.id.pickup_button2);
@@ -52,9 +52,9 @@ public class GameActivity extends Activity {
         pass_button3.setVisibility(View.INVISIBLE);
 
         humanHand = GameSetUp.getHumanHand();
-        final ArrayList<Cards> computerHand1 = GameSetUp.getComHand1();
-        final ArrayList<Cards> computerHand2 = GameSetUp.getComHand2();
-        final ArrayList<Cards> computerHand3 = GameSetUp.getComHand3();
+        //final ArrayList<Cards> computerHand1 = GameSetUp.getComHand1();
+        //final ArrayList<Cards> computerHand2 = GameSetUp.getComHand2();
+        //final ArrayList<Cards> computerHand3 = GameSetUp.getComHand3();
 
         //setting up score and trick id's
         yourScore = (TextView) findViewById(R.id.yourScore);
@@ -70,29 +70,19 @@ public class GameActivity extends Activity {
         assignImage(Round.turnedUpCard.toString(), iv_deck);
 
         iv_card1 = (ImageView) findViewById(R.id.iv_card1);
-        if (humanHand.get(0) != null) {
-            assignImage(humanHand.get(0).toString(), iv_card1);
-        }
+        assignImage(players.get(0).hand.get(0).toString(), iv_card1);
 
         iv_card2 = (ImageView) findViewById(R.id.iv_card2);
-        if (humanHand.get(1) != null) {
-            assignImage(humanHand.get(1).toString(), iv_card2);
-        }
+        assignImage(players.get(0).hand.get(1).toString(), iv_card2);
 
         iv_card3 = (ImageView) findViewById(R.id.iv_card3);
-        if (humanHand.get(2) != null) {
-            assignImage(humanHand.get(2).toString(), iv_card3);
-        }
+        assignImage(players.get(0).hand.get(2).toString(), iv_card3);
 
         iv_card4 = (ImageView) findViewById(R.id.iv_card4);
-        if (humanHand.get(3) != null) {
-            assignImage(humanHand.get(3).toString(), iv_card4);
-        }
+        assignImage(players.get(0).hand.get(3).toString(), iv_card4);
 
         iv_card5 = (ImageView) findViewById(R.id.iv_card5);
-        if (humanHand.get(4) != null) {
-            assignImage(humanHand.get(4).toString(), iv_card5);
-        }
+        assignImage(players.get(0).hand.get(4).toString(), iv_card5);
 
         //trumpPicture
         trumpPicture = (ImageView) findViewById(R.id.trumpPicture);
@@ -454,7 +444,7 @@ public class GameActivity extends Activity {
         for (int i = 0; i < 4; i++) {
             newHand.add(players.get(0).hand.get(i));
         }
-        newHand.add(players.get(0).hand.get(19));
+        newHand.add(players.get(0).hand.get(4));
 
         return newHand;
     }
