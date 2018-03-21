@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.hfad.euchreai.GameSetUp.currentRound;
 import static com.hfad.euchreai.GameSetUp.players;
@@ -25,6 +26,7 @@ public class GameActivity extends Activity {
     public static int[] score = new int[2];
     public static int[] tricks = new int[2];
     public static ArrayList<Cards> humanHand;
+    static GameSetUp game = new GameSetUp();
 
     /*
         -creates an instance of a new Game
@@ -36,8 +38,6 @@ public class GameActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
-        GameSetUp game = new GameSetUp();
 
         Log.v("--GameActivity27--", "Hands " + GameSetUp.getAllHands());
         Log.v("--GameActivity28--", "Hand " + GameSetUp.getHumanHand());
@@ -99,10 +99,6 @@ public class GameActivity extends Activity {
         iv_card7.setVisibility(View.INVISIBLE);
         iv_card8.setVisibility(View.INVISIBLE);
         iv_card9.setVisibility(View.INVISIBLE);
-
-        //Log.v("test", "CHECK score[0]: " + Integer.toString(score[0]));
-        //boolean[] setClickable = {true, true, true, true, true};
-        //setPlayersCardsClickable(setClickable);
 
         updateGame();
         setUpIntitialRound();
@@ -221,7 +217,7 @@ public class GameActivity extends Activity {
     }
 
     /*
-        funtion to show User that AI has played card
+        function to show User that AI has played card
      */
     public static void showAIPlaycard(String cardToShow) {
         int playerIndex = currentRound.currentTrick.currentPlayer;
@@ -268,7 +264,7 @@ public class GameActivity extends Activity {
         - calls setUpInitialRound
      */
     public static void cardPlayed(String cardText) {
-        GameSetUp.humanPlayCard(cardText);
+        game.humanPlayCard(cardText);
         updateGame();
         if(GameSetUp.gameOver){
             //Toast.makeText(GameActivity.this, "Game Over!", Toast.LENGTH_LONG).show();
@@ -357,16 +353,19 @@ public class GameActivity extends Activity {
             trump = GameSetUp.currentRound.trump.toString();
         }
 
+        //clears cards
         iv_card6.setVisibility(View.INVISIBLE);
         iv_card7.setVisibility(View.INVISIBLE);
         iv_card8.setVisibility(View.INVISIBLE);
         iv_card9.setVisibility(View.INVISIBLE);
 
+        //resets scores
         score[0] = GameSetUp.score[0];
         yourScore.setText(Integer.toString(score[0]));
         score[1] = GameSetUp.score[1];
         compScore.setText(Integer.toString(score[1]));
 
+        //resets tricks
         tricks[0] = GameSetUp.currentRound.trickCount[0];
         yourTricks.setText(Integer.toString(tricks[0]));
         tricks[1] = GameSetUp.currentRound.trickCount[1];
@@ -374,10 +373,14 @@ public class GameActivity extends Activity {
 
         boolean[] cardsClickable = {false, false, false, false, false};
         if (!GameSetUp.currentRound.isInPreGameState && GameSetUp.currentRound.outPlayer != 0) {
-            //cardsClickable = GameSetUp.getPlayableCardsForHuman();
+            cardsClickable = game.getPlayableCardsForHuman();
+            Log.v("--GameActivity376--", "cardsClickable: " + Arrays.toString(cardsClickable));
         }
-
         setPlayersCardsClickable(cardsClickable);
+
+        if (GameSetUp.currentRound.outPlayer == 0) {
+            //set up button that allows user to continue game
+        }
     }
 
     /*
@@ -606,8 +609,8 @@ public class GameActivity extends Activity {
             iv_card1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    assignImage(players.get(0).hand.get(0).toString(), iv_card9);
                     iv_card9.setVisibility(View.VISIBLE);
+                    assignImage(players.get(0).hand.get(0).toString(), iv_card9);
                     cardPlayed(players.get(0).hand.get(0).toString());
                     iv_card1.setVisibility(View.INVISIBLE);
                 }
@@ -650,16 +653,18 @@ public class GameActivity extends Activity {
             });
         }
 
-        if (clickable[4] == true) {
-            iv_card5.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    assignImage(players.get(0).hand.get(4).toString(), iv_card9);
-                    iv_card9.setVisibility(View.VISIBLE);
-                    cardPlayed(players.get(0).hand.get(4).toString());
-                    iv_card5.setVisibility(View.INVISIBLE);
-                }
-            });
+        if (clickable.length > 4) {
+            if (clickable[4] == true) {
+                iv_card5.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        assignImage(players.get(0).hand.get(4).toString(), iv_card9);
+                        iv_card9.setVisibility(View.VISIBLE);
+                        cardPlayed(players.get(0).hand.get(4).toString());
+                        iv_card5.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
         }
     }
 }
