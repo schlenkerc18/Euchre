@@ -23,6 +23,7 @@ public class GameSetUp {
         currentRound = new Round(allCards, players, 0);
         score[0] = 0;
         score[1] = 0;
+        Log.v("---GameSetUp26", "is GameSetUp() being called??");
         makeGameReadyForHuman();
     }
 
@@ -55,27 +56,40 @@ public class GameSetUp {
             allCards.add(new Cards(Cards.SUIT.SPADES, i));
         }
 
-        Log.v("-------test---------", "Cards" + allCards.toString());
+        Log.v("--GameSetUp58--", "Cards" + allCards.toString());
     }
 
     private void setUpPlayers() {
         players.add(new Player("Human"));
-        players.add(new VirtualPlayer("AI 1"));
-        players.add(new VirtualPlayer("AI 2"));
-        players.add(new VirtualPlayer("AI 3"));
+        players.add(new SmartVirtualPlayer("AI 1"));
+        players.add(new SmartVirtualPlayer("AI 2"));
+        players.add(new SmartVirtualPlayer("AI 3"));
     }
 
     public static void makeGameReadyForHuman() {
-        while (isCurrentPlayerAI() && currentRound.isInPreGameState)
+        //Log.v("--GameSetUp69--", "makeGameReadyForHuman(): " + players.get(currentRound.currentTrick.currentPlayer));
+        players.get(currentRound.currentTrick.currentPlayer);
+        while (isCurrentPlayerAI() && currentRound.isInPreGameState) {
             makeAIPlayPreRound();
-        while (isCurrentPlayerAI() && !currentRound.isInPreGameState)
+            Log.v("--GameSetUp89--", "making AI play pre round...");
+        }
+
+        while (isCurrentPlayerAI() && !currentRound.isInPreGameState) {
             makeAIPlay();
+            Log.v("--GameSetUp94--", "making AI play...");
+        }
+
 
         // there is a possible case that AI finished round and need to do pregame now
-        while (isCurrentPlayerAI() && currentRound.isInPreGameState)
+        while (isCurrentPlayerAI() && currentRound.isInPreGameState) {
             makeAIPlayPreRound();
-        while (isCurrentPlayerAI() && !currentRound.isInPreGameState)
+            Log.v("--GameSetUp101--", "making AI play pre round...");
+        }
+
+        while (isCurrentPlayerAI() && !currentRound.isInPreGameState) {
             makeAIPlay();
+            Log.v("--GameSetUp106--", "making AI play...");
+        }
     }
 
     public static void dealerDiscardForRoundStart(String c) {
@@ -84,7 +98,7 @@ public class GameSetUp {
     }
 
     public static void humanPlayCard(String cardBeingPlayed) {
-        Log.v("----test----", "Card being played: " + cardBeingPlayed);
+        Log.v("----testGameSetUp88----", "Card being played: " + cardBeingPlayed);
         Cards playedCard = players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(cardBeingPlayed);
         playCard(playedCard);
         makeGameReadyForHuman();
@@ -109,13 +123,17 @@ public class GameSetUp {
 
     public static void makeAIPlay() {
         SmartVirtualPlayer aiPlayer = ((SmartVirtualPlayer) players.get(currentRound.currentTrick.currentPlayer));
+        Log.v("---GameSetUP113---", "aiPlayer: " + players.get(currentRound.currentTrick.currentPlayer));
         Cards cardToPlay = aiPlayer.getCardToPlay(currentRound.currentTrick);
+        Log.v("---GameSetUP129---", "card AI is playing: " + cardToPlay);
+        GameActivity.showAIPlaycard(cardToPlay.toString());
         playCard(cardToPlay);
     }
 
     public static void makeAIPlayPreRound() {
         int playerIndex = currentRound.currentTrick.currentPlayer;
         SmartVirtualPlayer aip = ((SmartVirtualPlayer) players.get(playerIndex));
+        Log.v("--GameSetUp136--", "isCardTurnedUP: " + currentRound.isCardTurnedUp);
         if (currentRound.isCardTurnedUp) {
             if (aip.pickUp(currentRound.turnedUpCard)) {
                 currentRound.preRoundCall();
@@ -142,7 +160,7 @@ public class GameSetUp {
         Player p = players.get(outPlayer);
         p.hand.clear();
         for (int i = 0; i < 5; i++) {
-            p.hand.add(null);
+            p.hand.add(new NullCard());
         }
     }
 
@@ -161,6 +179,7 @@ public class GameSetUp {
     // used for both AI and humans
     private static void playCard(Cards c) {
         currentRound.playCard(c);
+
         if (currentRound.isOver()) {
             int[] roundScore = currentRound.scoreRound();
             score[0] += roundScore[0];
@@ -175,10 +194,9 @@ public class GameSetUp {
 
     public static ArrayList<ArrayList<Cards>> getAllHands() {
         ArrayList<ArrayList<Cards>> out = new ArrayList<ArrayList<Cards>>();
-        //Log.v("----test----", "what's happening");
-        out.add(players.get(0).hand);
-        //Log.v("----test----", "player hand: " + players.get(0).hand);
-
+        for(Player p : players) {
+            out.add(p.hand);
+        }
         return out;
     }
 
@@ -187,41 +205,30 @@ public class GameSetUp {
         for (int i = 0; i < 5; i++) {
             ret.add(players.get(0).hand.get(i));
         }
-
         return ret;
     }
 
     public static ArrayList<Cards> getComHand1() {
         ArrayList<Cards> ret = new ArrayList<Cards>();
-
-        if (players.get(0).hand.get(0) != null) {
-            for (int i = 5; i < 10; i++) {
-                ret.add(players.get(0).hand.get(i));
-            }
+        for (int i = 0; i < 5; i++) {
+            ret.add(players.get(1).hand.get(i));
         }
         return ret;
     }
 
     public static ArrayList<Cards> getComHand2() {
         ArrayList<Cards> ret = new ArrayList<Cards>();
-
-        if (players.get(0).hand.get(0) != null) {
-            for (int i = 10; i < 15; i++) {
-                ret.add(players.get(0).hand.get(i));
-            }
+        for (int i = 0; i < 5; i++) {
+            ret.add(players.get(2).hand.get(i));
         }
         return ret;
     }
 
     public static ArrayList<Cards> getComHand3() {
         ArrayList<Cards> ret = new ArrayList<Cards>();
-
-        if (players.get(0).hand.get(0) != null) {
-            for (int i = 15; i < 20; i++) {
-                ret.add(players.get(0).hand.get(i));
-            }
+        for (int i = 0; i < 5; i++) {
+            ret.add(players.get(3).hand.get(i));
         }
-
         return ret;
     }
 }
