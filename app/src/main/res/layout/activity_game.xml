@@ -214,6 +214,27 @@
         android:textColor="@color/white"/>
 
     <TextView
+        android:id="@+id/teamName"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/yourTricks"
+        android:layout_marginRight="18dp"
+        android:text="Good Guys:"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/compName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/teamName"
+        android:layout_toLeftOf="@+id/compTricks"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="18dp"
+        android:text="Bad Guys:"
+        android:textColor="@color/white"/>
+
+    <TextView
         android:id="@+id/yourTricks"
         android:text="0"
         android:layout_toLeftOf="@+id/yourScore"
