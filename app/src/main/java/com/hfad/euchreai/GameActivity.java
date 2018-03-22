@@ -26,7 +26,7 @@ public class GameActivity extends Activity {
 
     static ImageView iv_deck, iv_card1, iv_card2, iv_card3, iv_card4, iv_card5, iv_card6, iv_card7, iv_card8, iv_card9, iv_card10, trumpPicture;
     static TextView cardToDiscard, yourTricks, compTricks, yourScore, compScore;
-    static Button pass_button3, pickup_button2;
+    static Button pass_button3, pickup_button2, contWithGame;
     public static int[] score = new int[2];
     public static int[] tricks = new int[2];
     public static ArrayList<Cards> humanHand;
@@ -52,11 +52,13 @@ public class GameActivity extends Activity {
         Log.v("--GameActivity30--", "ComHand2: " + GameSetUp.getComHand2());
         Log.v("--GameActivity31--", "ComHand3: " + GameSetUp.getComHand3());
 
-        //setUp buttons for picking up and passing
+        //setUp buttons for picking up and passing, and when outPlayer == 0
         pickup_button2 = (Button) findViewById(R.id.pickup_button2);
         pass_button3 = (Button) findViewById(R.id.pass_button3);
         pickup_button2.setVisibility(View.INVISIBLE);
         pass_button3.setVisibility(View.INVISIBLE);
+        contWithGame = (Button) findViewById(R.id.contWithGame);
+        contWithGame.setVisibility(View.INVISIBLE);
 
         //setting up score and trick id's
         yourScore = (TextView) findViewById(R.id.yourScore);
@@ -411,8 +413,29 @@ public class GameActivity extends Activity {
         }
         setPlayersCardsClickable(cardsClickable);
 
-        if (GameSetUp.currentRound.outPlayer == 0) {
-            //set up button that allows user to continue game
+        if (game.currentRound.outPlayer == 0) {
+            String button = "contWithGame";
+            setUpButtons(button);
+        }
+    }
+
+    public static void setUpButtons(String text) {
+        if (text == "contWithGame") {
+            contWithGame.setVisibility(View.VISIBLE);
+            contWithGame.setClickable(true);
+            contWithGame.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    game.humanPlayCard("");
+                    updateGame();
+                    setUpIntitialRound();
+                    if(game.currentRound.outPlayer != 0 && !game.currentRound.isInPreGameState) {
+                        contWithGame.setVisibility(View.INVISIBLE);
+                        contWithGame.setClickable(false);
+                    }
+                    return;
+                }
+            });
         }
     }
 
