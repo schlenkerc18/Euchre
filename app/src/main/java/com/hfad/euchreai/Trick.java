@@ -1,6 +1,11 @@
 package com.hfad.euchreai;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import static com.hfad.euchreai.GameSetUp.players;
 
 /**
  * Created by Schlenker18 on 1/23/2018.
@@ -8,12 +13,13 @@ import java.util.ArrayList;
 
 public class Trick {
     public int leadingPlayer;
-    public static Cards.SUIT leadingSuit;
+    public Cards.SUIT leadingSuit;
     public int currentPlayer;
     public int currentWinner;
     public Cards currentWinningCard;
-    public static Cards.SUIT trump;
-    public ArrayList<Cards> cardsPlayed;
+    public Cards.SUIT trump;
+    public static ArrayList<Cards> cardsPlayed;
+    public static boolean cardsNeedToBeVisible;
 
     public Trick(int leadPlayer, Cards.SUIT tr) {
         leadingPlayer = leadPlayer % 4;
@@ -36,6 +42,15 @@ public class Trick {
 
         cardsPlayed.add(c);
         incrementTurn();
+
+        if (currentPlayer == 0) {
+            boolean[] clickable = GameSetUp.getPlayableCardsForHuman();
+            GameActivity.setPlayersCardsClickable(clickable);
+            Log.v("--Trick46--", "Player Hand: " + players.get(0).hand);
+            Log.v("--Trick46--", "cardsClickable: " + Arrays.toString(clickable));
+            Log.v("--Trick47--", "Player needs to play card");
+            cardsNeedToBeVisible = true;
+        }
     }
 
     public void incrementTurn()
@@ -48,7 +63,7 @@ public class Trick {
         return cardsPlayed.size() != 0;
     }
 
-    public boolean isOver() {
+    public static boolean isOver() {
         return cardsPlayed.size() == 4;
     }
 

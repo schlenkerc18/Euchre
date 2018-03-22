@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
+import android.os.Handler;
 
 import static com.hfad.euchreai.GameSetUp.currentRound;
 import static com.hfad.euchreai.GameSetUp.players;
@@ -28,6 +31,9 @@ public class GameActivity extends Activity {
     public static int[] tricks = new int[2];
     public static ArrayList<Cards> humanHand;
     static GameSetUp game = new GameSetUp();
+
+
+    private final int interval = 1000; // 1 Second
 
     /*
         -creates an instance of a new Game
@@ -222,6 +228,7 @@ public class GameActivity extends Activity {
      */
     public static void showAIPlaycard(String cardToShow) {
         int playerIndex = currentRound.currentTrick.currentPlayer;
+
         for (int i = 0; i < 4; i++) {
             if (playerIndex == 1) {
                 //screen shows left player playing card
@@ -266,6 +273,16 @@ public class GameActivity extends Activity {
      */
     public static void cardPlayed(String cardText) {
         game.humanPlayCard(cardText);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                iv_card9.setVisibility(View.VISIBLE);
+                //Do something after 100ms
+            }
+        }, 100);
+
         updateGame();
         if(GameSetUp.gameOver){
             //Toast.makeText(GameActivity.this, "Game Over!", Toast.LENGTH_LONG).show();
@@ -344,7 +361,6 @@ public class GameActivity extends Activity {
         - sets humanPlayable cards to clickable
      */
     private static void updateGame() {
-        Log.v("--GameActivity347--", "Updating hand");
         updateHand();
         Log.v("--GameActivity319--", "Game Being Updated");
         String trump = "";
@@ -357,10 +373,12 @@ public class GameActivity extends Activity {
         }
 
         //clears cards
-        iv_card6.setVisibility(View.INVISIBLE);
-        iv_card7.setVisibility(View.INVISIBLE);
-        iv_card8.setVisibility(View.INVISIBLE);
-        iv_card9.setVisibility(View.INVISIBLE);
+        if (Trick.isOver()) {
+            iv_card6.setVisibility(View.INVISIBLE);
+            iv_card7.setVisibility(View.INVISIBLE);
+            iv_card8.setVisibility(View.INVISIBLE);
+            iv_card9.setVisibility(View.INVISIBLE);
+        }
 
         //resets scores
         score[0] = GameSetUp.score[0];
@@ -374,12 +392,12 @@ public class GameActivity extends Activity {
         tricks[1] = GameSetUp.currentRound.trickCount[1];
         compTricks.setText(Integer.toString(tricks[1]));
 
-        Log.v("--GameActivity377--", "Players current hand: " + players.get(0).hand);
+        //Log.v("--GameActivity377--", "Players current hand: " + players.get(0).hand);
 
         boolean[] cardsClickable = {false, false, false, false, false};
         if (!GameSetUp.currentRound.isInPreGameState && GameSetUp.currentRound.outPlayer != 0) {
             cardsClickable = game.getPlayableCardsForHuman();
-            Log.v("--GameActivity382--", "cardsClickable: " + Arrays.toString(cardsClickable));
+            //Log.v("--GameActivity382--", "cardsClickable: " + Arrays.toString(cardsClickable));
         }
         setPlayersCardsClickable(cardsClickable);
 
@@ -416,7 +434,7 @@ public class GameActivity extends Activity {
         Sets UI to allow user to discard a card
      */
     public static void setUpDiscard() {
-        Log.v("--GameActivity328--", "outPlayer: " + Round.outPlayer);
+        Log.v("--GameActivity419--", "outPlayer: " + Round.outPlayer);
         if (GameSetUp.currentRound.outPlayer == 0){
             GameSetUp.dealerDiscardForRoundStart(GameSetUp.currentRound.turnedUpCard.toString());
             updateGame();
@@ -438,20 +456,6 @@ public class GameActivity extends Activity {
     }
 
     /*
-        resets the humanHand to include the kitty
-        and exclude the discard card
-     */
-    public static ArrayList<Cards> resetHumanHand() {
-        ArrayList<Cards> newHand = new ArrayList<Cards>();
-
-        for (int i = 0; i < 5; i++) {
-            newHand.add(players.get(0).hand.get(i));
-        }
-
-        return newHand;
-    }
-
-    /*
         the selected card will be discarded from the players hand
         and will be replaced by the kitty.  The kitty will then be
         added to the players hand
@@ -467,8 +471,7 @@ public class GameActivity extends Activity {
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
                 Log.v("--GameActivity466--", "Human Hand" + players.get(0).hand);
                 assignImage("Back of Card", iv_deck);
-                //resetHumanHand();
-                //Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
+                updateHand();
                 iv_card1.setClickable(false);
                 iv_card2.setClickable(false);
                 iv_card3.setClickable(false);
@@ -485,14 +488,12 @@ public class GameActivity extends Activity {
         iv_card2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //iv_card2.setVisibility(View.INVISIBLE);
                 iv_card10.setVisibility(View.INVISIBLE);
                 assignImage(Round.turnedUpCard.toString(), iv_card2);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(players.get(0).hand.get(1).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
                 assignImage("Back of Card", iv_deck);
-                //resetHumanHand();
-                Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
+                updateHand();
                 iv_card1.setClickable(false);
                 iv_card2.setClickable(false);
                 iv_card3.setClickable(false);
@@ -509,14 +510,12 @@ public class GameActivity extends Activity {
         iv_card3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //iv_card3.setVisibility(View.INVISIBLE);
                 iv_card10.setVisibility(View.INVISIBLE);
                 assignImage(Round.turnedUpCard.toString(), iv_card3);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(players.get(0).hand.get(2).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
                 assignImage("Back of Card", iv_deck);
-                //resetHumanHand();
-                Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
+                updateHand();
                 iv_card1.setClickable(false);
                 iv_card2.setClickable(false);
                 iv_card3.setClickable(false);
@@ -533,14 +532,12 @@ public class GameActivity extends Activity {
         iv_card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //iv_card4.setVisibility(View.INVISIBLE);
                 iv_card10.setVisibility(View.INVISIBLE);
                 assignImage(Round.turnedUpCard.toString(), iv_card4);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(players.get(0).hand.get(3).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
                 assignImage("Back of Card", iv_deck);
-                //resetHumanHand();
-                Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
+                updateHand();
                 iv_card1.setClickable(false);
                 iv_card2.setClickable(false);
                 iv_card3.setClickable(false);
@@ -557,14 +554,12 @@ public class GameActivity extends Activity {
         iv_card5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //iv_card5.setVisibility(View.INVISIBLE);
                 iv_card10.setVisibility(View.INVISIBLE);
                 assignImage(Round.turnedUpCard.toString(), iv_card5);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(players.get(0).hand.get(4).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
                 assignImage("Back of Card", iv_deck);
-                //resetHumanHand();
-                Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
+                updateHand();
                 iv_card1.setClickable(false);
                 iv_card2.setClickable(false);
                 iv_card3.setClickable(false);
@@ -687,8 +682,10 @@ public class GameActivity extends Activity {
     }
 
     public static void updateHand() {
+        Log.v("--GameActivity347--", "Updating hand");
         int handSize = players.get(0).hand.size();
         Log.v("--GameActivity685--", "Current handSize: " + players.get(0).hand.size());
+        Log.v("--GameActivity693--", "Players current hand: " + players.get(0).hand);
 
         if (handSize == 5) {
             assignImage(players.get(0).hand.get(0).toString(), iv_card1);
