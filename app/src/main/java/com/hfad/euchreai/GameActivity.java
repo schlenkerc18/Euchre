@@ -303,17 +303,17 @@ public class GameActivity extends Activity {
         -if not trump has been called by computer, will prompt user to pickUp or pass
      */
     private static void setUpIntitialRound() {
-        Log.v("----GameActivity269----", "Initial Round ");
+        Log.v("----GameActivity306----", "Initial Round ");
         //Toast.makeText(GameActivity.this, "Initial Round", Toast.LENGTH_LONG).show();
 
         if(!GameSetUp.currentRound.isInPreGameState){
-            Log.v("--GameActivity273--", "Update");
+            Log.v("--GameActivity310--", "Update");
             updateGame();
             return;
         }
 
         else if(GameSetUp.currentRound.dealerNeedsToDiscard){
-            Log.v("---GameActivity279---", "Dealer discard");
+            Log.v("---GameActivity316---", "Dealer discard");
             setUpDiscard();
             return;
         }
@@ -331,7 +331,7 @@ public class GameActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     GameSetUp.humanPreRoundPass();
-                    Log.v("--GameActivity297--", "User passed");
+                    Log.v("--GameActivity334--", "User passed");
                     showTrump(Round.currentTrick.trump);
                     pickup_button2.setVisibility(View.INVISIBLE);
                     pass_button3.setVisibility(View.INVISIBLE);
@@ -342,16 +342,26 @@ public class GameActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     GameSetUp.humanPreRoundCall();
-                    Log.v("--GameActivity306--", "User picked up");
+                    addKittyToHand();
+                    Log.v("--GameActivity345--", "User picked up");
                     showTrump(Round.turnedUpCard.suit);
                     pickup_button2.setVisibility(View.INVISIBLE);
                     pass_button3.setVisibility(View.INVISIBLE);
                 }
             });
         }
-        // need a way to tell dealer to pass or pick up
-        //PassPickUpDialog ppd = new PassPickUpDialog(GameActivity.this);
-        //ppd.show();
+    }
+
+    public static void addKittyToHand() {
+        assignImage(Round.turnedUpCard.toString(), iv_card10);
+        iv_card1.setClickable(true);
+        iv_card2.setClickable(true);
+        iv_card3.setClickable(true);
+        iv_card4.setClickable(true);
+        iv_card5.setClickable(true);
+        iv_card10.setClickable(true);
+        cardToDiscard.setText("Select a Card to Discard");
+        showDiscard();
     }
 
     /*
@@ -442,17 +452,7 @@ public class GameActivity extends Activity {
         }
 
         updateGame();
-
-        assignImage(Round.turnedUpCard.toString(), iv_card10);
-        iv_card1.setClickable(true);
-        iv_card2.setClickable(true);
-        iv_card3.setClickable(true);
-        iv_card4.setClickable(true);
-        iv_card5.setClickable(true);
-        iv_card10.setClickable(true);
-
-        cardToDiscard.setText("Select a Card to Discard");
-        showDiscard();
+        addKittyToHand();
     }
 
     /*
@@ -618,7 +618,6 @@ public class GameActivity extends Activity {
                         assignImage(players.get(0).hand.get(0).toString(), iv_card9);
                         iv_card9.setVisibility(View.VISIBLE);
                         cardPlayed(players.get(0).hand.get(0).toString());
-                        //iv_card1.setVisibility(View.INVISIBLE);
                     }
                 });
             }
@@ -632,7 +631,6 @@ public class GameActivity extends Activity {
                         assignImage(players.get(0).hand.get(1).toString(), iv_card9);
                         iv_card9.setVisibility(View.VISIBLE);
                         cardPlayed(players.get(0).hand.get(1).toString());
-                        //iv_card2.setVisibility(View.INVISIBLE);
                     }
                 });
             }
@@ -646,7 +644,6 @@ public class GameActivity extends Activity {
                         assignImage(players.get(0).hand.get(2).toString(), iv_card9);
                         iv_card9.setVisibility(View.VISIBLE);
                         cardPlayed(players.get(0).hand.get(2).toString());
-                        //iv_card3.setVisibility(View.INVISIBLE);
                     }
                 });
             }
@@ -660,7 +657,6 @@ public class GameActivity extends Activity {
                         assignImage(players.get(0).hand.get(3).toString(), iv_card9);
                         iv_card9.setVisibility(View.VISIBLE);
                         cardPlayed(players.get(0).hand.get(3).toString());
-                        //iv_card4.setVisibility(View.INVISIBLE);
                     }
                 });
             }
@@ -674,7 +670,6 @@ public class GameActivity extends Activity {
                         assignImage(players.get(0).hand.get(4).toString(), iv_card9);
                         iv_card9.setVisibility(View.VISIBLE);
                         cardPlayed(players.get(0).hand.get(4).toString());
-                        //iv_card5.setVisibility(View.INVISIBLE);
                     }
                 });
             }
