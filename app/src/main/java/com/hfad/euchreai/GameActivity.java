@@ -3,6 +3,7 @@ package com.hfad.euchreai;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -343,6 +344,8 @@ public class GameActivity extends Activity {
         - sets humanPlayable cards to clickable
      */
     private static void updateGame() {
+        Log.v("--GameActivity347--", "Updating hand");
+        updateHand();
         Log.v("--GameActivity319--", "Game Being Updated");
         String trump = "";
         if(GameSetUp.currentRound.trump == null) {
@@ -371,10 +374,12 @@ public class GameActivity extends Activity {
         tricks[1] = GameSetUp.currentRound.trickCount[1];
         compTricks.setText(Integer.toString(tricks[1]));
 
+        Log.v("--GameActivity377--", "Players current hand: " + players.get(0).hand);
+
         boolean[] cardsClickable = {false, false, false, false, false};
         if (!GameSetUp.currentRound.isInPreGameState && GameSetUp.currentRound.outPlayer != 0) {
             cardsClickable = game.getPlayableCardsForHuman();
-            Log.v("--GameActivity376--", "cardsClickable: " + Arrays.toString(cardsClickable));
+            Log.v("--GameActivity382--", "cardsClickable: " + Arrays.toString(cardsClickable));
         }
         setPlayersCardsClickable(cardsClickable);
 
@@ -439,10 +444,9 @@ public class GameActivity extends Activity {
     public static ArrayList<Cards> resetHumanHand() {
         ArrayList<Cards> newHand = new ArrayList<Cards>();
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             newHand.add(players.get(0).hand.get(i));
         }
-        newHand.add(players.get(0).hand.get(4));
 
         return newHand;
     }
@@ -461,8 +465,10 @@ public class GameActivity extends Activity {
                 assignImage(Round.turnedUpCard.toString(), iv_card1);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(players.get(0).hand.get(0).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
-                resetHumanHand();
-                Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
+                Log.v("--GameActivity466--", "Human Hand" + players.get(0).hand);
+                assignImage("Back of Card", iv_deck);
+                //resetHumanHand();
+                //Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
                 iv_card1.setClickable(false);
                 iv_card2.setClickable(false);
                 iv_card3.setClickable(false);
@@ -484,6 +490,7 @@ public class GameActivity extends Activity {
                 assignImage(Round.turnedUpCard.toString(), iv_card2);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(players.get(0).hand.get(1).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
+                assignImage("Back of Card", iv_deck);
                 //resetHumanHand();
                 Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
                 iv_card1.setClickable(false);
@@ -507,6 +514,7 @@ public class GameActivity extends Activity {
                 assignImage(Round.turnedUpCard.toString(), iv_card3);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(players.get(0).hand.get(2).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
+                assignImage("Back of Card", iv_deck);
                 //resetHumanHand();
                 Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
                 iv_card1.setClickable(false);
@@ -530,6 +538,7 @@ public class GameActivity extends Activity {
                 assignImage(Round.turnedUpCard.toString(), iv_card4);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(players.get(0).hand.get(3).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
+                assignImage("Back of Card", iv_deck);
                 //resetHumanHand();
                 Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
                 iv_card1.setClickable(false);
@@ -553,6 +562,7 @@ public class GameActivity extends Activity {
                 assignImage(Round.turnedUpCard.toString(), iv_card5);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(players.get(0).hand.get(4).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
+                assignImage("Back of Card", iv_deck);
                 //resetHumanHand();
                 Log.v("--GameActivity351--", "New Hand: " + resetHumanHand());
                 iv_card1.setClickable(false);
@@ -605,52 +615,60 @@ public class GameActivity extends Activity {
     }
 
     public static void setPlayersCardsClickable(boolean[] clickable){
-        if (clickable[0] == true) {
-            iv_card1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    iv_card9.setVisibility(View.VISIBLE);
-                    assignImage(players.get(0).hand.get(0).toString(), iv_card9);
-                    cardPlayed(players.get(0).hand.get(0).toString());
-                    iv_card1.setVisibility(View.INVISIBLE);
-                }
-            });
+        if (clickable.length > 0) {
+            if (clickable[0] == true) {
+                iv_card1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        assignImage(players.get(0).hand.get(0).toString(), iv_card9);
+                        iv_card9.setVisibility(View.VISIBLE);
+                        cardPlayed(players.get(0).hand.get(0).toString());
+                        //iv_card1.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
         }
 
-        if (clickable[1] == true) {
-            iv_card2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    assignImage(players.get(0).hand.get(1).toString(), iv_card9);
-                    iv_card9.setVisibility(View.VISIBLE);
-                    cardPlayed(players.get(0).hand.get(1).toString());
-                    iv_card2.setVisibility(View.INVISIBLE);
-                }
-            });
+        if (clickable.length > 1) {
+            if (clickable[1] == true) {
+                iv_card2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        assignImage(players.get(0).hand.get(1).toString(), iv_card9);
+                        iv_card9.setVisibility(View.VISIBLE);
+                        cardPlayed(players.get(0).hand.get(1).toString());
+                        //iv_card2.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
         }
 
-        if (clickable[2] == true) {
-            iv_card3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    assignImage(players.get(0).hand.get(2).toString(), iv_card9);
-                    iv_card9.setVisibility(View.VISIBLE);
-                    cardPlayed(players.get(0).hand.get(2).toString());
-                    iv_card3.setVisibility(View.INVISIBLE);
-                }
-            });
+        if (clickable.length > 2) {
+            if (clickable[2] == true) {
+                iv_card3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        assignImage(players.get(0).hand.get(2).toString(), iv_card9);
+                        iv_card9.setVisibility(View.VISIBLE);
+                        cardPlayed(players.get(0).hand.get(2).toString());
+                        //iv_card3.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
         }
 
-        if (clickable[3] == true) {
-            iv_card4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    assignImage(players.get(0).hand.get(3).toString(), iv_card9);
-                    iv_card9.setVisibility(View.VISIBLE);
-                    cardPlayed(players.get(0).hand.get(3).toString());
-                    iv_card4.setVisibility(View.INVISIBLE);
-                }
-            });
+        if (clickable.length > 3) {
+            if (clickable[3] == true) {
+                iv_card4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        assignImage(players.get(0).hand.get(3).toString(), iv_card9);
+                        iv_card9.setVisibility(View.VISIBLE);
+                        cardPlayed(players.get(0).hand.get(3).toString());
+                        //iv_card4.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
         }
 
         if (clickable.length > 4) {
@@ -661,7 +679,7 @@ public class GameActivity extends Activity {
                         assignImage(players.get(0).hand.get(4).toString(), iv_card9);
                         iv_card9.setVisibility(View.VISIBLE);
                         cardPlayed(players.get(0).hand.get(4).toString());
-                        iv_card5.setVisibility(View.INVISIBLE);
+                        //iv_card5.setVisibility(View.INVISIBLE);
                     }
                 });
             }
