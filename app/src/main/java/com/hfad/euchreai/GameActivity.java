@@ -685,4 +685,49 @@ public class GameActivity extends Activity {
             }
         }
     }
+
+    public static void updateHand() {
+        int handSize = players.get(0).hand.size();
+        Log.v("--GameActivity685--", "Current handSize: " + players.get(0).hand.size());
+
+        if (handSize == 5) {
+            assignImage(players.get(0).hand.get(0).toString(), iv_card1);
+            assignImage(players.get(0).hand.get(1).toString(), iv_card2);
+            assignImage(players.get(0).hand.get(2).toString(), iv_card3);
+            assignImage(players.get(0).hand.get(3).toString(), iv_card4);
+            assignImage(players.get(0).hand.get(4).toString(), iv_card5);
+        }
+
+        if (handSize == 4) {
+            assignImage(players.get(0).hand.get(0).toString(), iv_card1);
+            assignImage(players.get(0).hand.get(1).toString(), iv_card2);
+            assignImage(players.get(0).hand.get(2).toString(), iv_card3);
+            assignImage(players.get(0).hand.get(3).toString(), iv_card4);
+            iv_card5.setVisibility(View.INVISIBLE);
+        }
+
+        if (handSize == 3) {
+            assignImage(players.get(0).hand.get(0).toString(), iv_card1);
+            assignImage(players.get(0).hand.get(1).toString(), iv_card2);
+            assignImage(players.get(0).hand.get(2).toString(), iv_card3);
+            iv_card4.setVisibility(View.INVISIBLE);
+            iv_card5.setVisibility(View.INVISIBLE);
+        }
+
+        if (handSize == 2) {
+            assignImage(players.get(0).hand.get(0).toString(), iv_card1);
+            assignImage(players.get(0).hand.get(1).toString(), iv_card2);
+            iv_card3.setVisibility(View.INVISIBLE);
+            iv_card4.setVisibility(View.INVISIBLE);
+            iv_card5.setVisibility(View.INVISIBLE);
+        }
+
+        if (handSize == 1) {
+            assignImage(players.get(0).hand.get(0).toString(), iv_card1);
+            iv_card2.setVisibility(View.INVISIBLE);
+            iv_card3.setVisibility(View.INVISIBLE);
+            iv_card4.setVisibility(View.INVISIBLE);
+            iv_card5.setVisibility(View.INVISIBLE);
+        }
+    }
 }
