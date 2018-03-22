@@ -153,6 +153,13 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/contWithGame"
+        android:layout_above="@+id/layoutLinear"
+        android:layout_centerHorizontal="true"
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
+
+    <Button
         android:id="@+id/pass_button3"
         android:layout_above="@id/layoutLinear"
         android:layout_centerHorizontal="true"
