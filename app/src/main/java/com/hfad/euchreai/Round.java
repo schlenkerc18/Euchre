@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static com.hfad.euchreai.GameActivity.showRoundReset;
+
 /**
  * Created by Schlenker18 on 12/4/2017.
  */
@@ -13,7 +15,7 @@ import java.util.Random;
 public class Round {
     public LinkedList<Cards> deck = new LinkedList<Cards>();
     public ArrayList<Cards> allCards;
-    public static ArrayList<Player> players;
+    public ArrayList<Player> players;
     public static Trick currentTrick;
     public static ArrayList<Trick> trickHistory = new ArrayList<Trick>();
     public static Cards.SUIT trump;
@@ -34,11 +36,11 @@ public class Round {
         shuffle();
         deal();
         turnedUpCard = deck.pop();
-        Log.v("--Round37--", "TurnedUpCard " + turnedUpCard.toString());
+        Log.v("--Round39--", "TurnedUpCard: " + turnedUpCard.toString());
         fillCallableSuits();
 
         dealer = dealerIn;
-        Log.v("--Round41--", "Dealer index: " + dealer);
+        Log.v("--Round43--", "Dealer index: " + dealer);
         currentTrick = new Trick(dealer + 1,trump);
         //Log.v("--Round43--", "Dealer index after new Trick: " + dealer);
         trickCount[0] = 0;
@@ -91,7 +93,7 @@ public class Round {
         currentTrick.trump = trump;
         currentTrick.currentPlayer = dealer;
         Player p = players.get(dealer);
-        Log.v("--Round91--", "CardTurnedUP" + trump);
+        Log.v("--Round96--", "CardTurnedUP: " + trump);
 
         if (p instanceof SmartVirtualPlayer) {
             SmartVirtualPlayer svp = ((SmartVirtualPlayer) p);
@@ -114,7 +116,7 @@ public class Round {
         trump = toBeTrump;
         currentTrick.trump = trump;
         prepareForRoundStart();
-        Log.v("--Round113--", "card turned down:" + trump);
+        Log.v("--Round119--", "card turned down:" + trump);
     }
 
     private void prepareForRoundStart() {
@@ -146,17 +148,22 @@ public class Round {
     }
 
     public void playCard(Cards c) {
-        System.out.println("playing...Round148...");
+        //System.out.println("playing...Round149...");
         currentTrick.playCardForCurrentPlayer(c);
         if (currentTrick.isOver()) {
             trickCount[currentTrick.currentWinner % 2] ++;
             trickHistory.add(currentTrick);
+            Log.v("--Round156--", "Trick history size: " + trickHistory.size());
             currentTrick = currentTrick.getNextTrick();
         }
     }
 
     public boolean isOver(){
-        return trickHistory.size() == 5;
+        if (trickHistory.size() == 5) {
+            trickHistory.clear();
+            return true;
+        }
+        return false;
     }
 
     public int[] scoreRound(){
@@ -211,23 +218,6 @@ public class Round {
                 players.get(j).hand.add(draw());
             }
         }
-
-        Log.v("--Round224--", "human reference: " + players.get(0).hand);
-        Log.v("--Round224--", "svp1 reference: " + players.get(1).hand);
-        Log.v("--Round224--", "svp1 reference: " + players.get(2).hand);
-        Log.v("--Round224--", "svp1 reference: " + players.get(3).hand);
-
-
-//        Log.v("--Round220--", "human hand: " + human.hand);
-//        Log.v("--Round220--", "ai1 hand: " + ai1.hand);
-//        Log.v("--Round220--", "ai2 hand: " + ai2.hand);
-//        Log.v("--Round220--", "ai3 hand: " + ai3.hand);
-//
-//
-//        Log.v("--Round213--", "Player 0 hand size: " + human.hand.size());
-//        Log.v("--Round214--", "Player 1 hand size: " + ai1.hand.size());
-//        Log.v("--Round215--", "Player 2 hand size: " + ai2.hand.size());
-//        Log.v("--Round216--", "Player 3 hand size: " + ai3.hand.size());
     }
 
     public Cards draw(){
@@ -235,6 +225,9 @@ public class Round {
     }
 
     public Round getNextRound() {
-        return new Round(allCards, players, (dealer+1) % 4);
+        Log.v("--Round224--", "Getting new Round");
+        Round round = new Round(allCards, players, (dealer+1) % 4);
+        GameActivity.showRoundReset();
+        return round;
     }
 }

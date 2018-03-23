@@ -32,9 +32,6 @@ public class GameActivity extends Activity {
     public static ArrayList<Cards> humanHand;
     static GameSetUp game = new GameSetUp();
 
-
-    private final int interval = 1000; // 1 Second
-
     /*
         -creates an instance of a new Game
         -sets up all buttons, textviews, imageviews, initializes scores
@@ -225,6 +222,35 @@ public class GameActivity extends Activity {
         }
     }
 
+    public static void showRoundReset() {
+        Log.v("--GameActivity226--", "Resettig UI....");
+
+        assignImage(Round.turnedUpCard.toString(), iv_deck);
+
+        iv_card1.setVisibility(View.VISIBLE);
+        iv_card2.setVisibility(View.VISIBLE);
+        iv_card3.setVisibility(View.VISIBLE);
+        iv_card4.setVisibility(View.VISIBLE);
+        iv_card5.setVisibility(View.VISIBLE);
+
+        assignImage(players.get(0).hand.get(0).toString(), iv_card1);
+        assignImage(players.get(0).hand.get(1).toString(), iv_card2);
+        assignImage(players.get(0).hand.get(2).toString(), iv_card3);
+        assignImage(players.get(0).hand.get(3).toString(), iv_card4);
+        assignImage(players.get(0).hand.get(4).toString(), iv_card5);
+
+        //trumpPicture
+        showTrump(Round.currentTrick.trump);
+
+        iv_card6.setVisibility(View.INVISIBLE);
+        iv_card7.setVisibility(View.INVISIBLE);
+        iv_card8.setVisibility(View.INVISIBLE);
+        iv_card9.setVisibility(View.INVISIBLE);
+
+        updateGame();
+        setUpIntitialRound();
+    }
+
     /*
         function to show User that AI has played card
      */
@@ -276,14 +302,7 @@ public class GameActivity extends Activity {
     public static void cardPlayed(String cardText) {
         game.humanPlayCard(cardText);
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                iv_card9.setVisibility(View.VISIBLE);
-                //Do something after 100ms
-            }
-        }, 100);
+        iv_card9.setVisibility(View.VISIBLE);
 
         updateGame();
         if(GameSetUp.gameOver){
@@ -305,17 +324,17 @@ public class GameActivity extends Activity {
         -if not trump has been called by computer, will prompt user to pickUp or pass
      */
     private static void setUpIntitialRound() {
-        Log.v("----GameActivity306----", "Initial Round ");
+        Log.v("----GameActivity327----", "Initial Round ");
         //Toast.makeText(GameActivity.this, "Initial Round", Toast.LENGTH_LONG).show();
 
         if(!GameSetUp.currentRound.isInPreGameState){
-            Log.v("--GameActivity310--", "Update");
+            Log.v("--GameActivity331--", "Update");
             updateGame();
             return;
         }
 
         else if(GameSetUp.currentRound.dealerNeedsToDiscard){
-            Log.v("---GameActivity316---", "Dealer discard");
+            Log.v("---GameActivity344---", "Dealer discard");
             setUpDiscard();
             return;
         }
@@ -374,7 +393,7 @@ public class GameActivity extends Activity {
      */
     private static void updateGame() {
         updateHand();
-        Log.v("--GameActivity319--", "Game Being Updated");
+        Log.v("--GameActivity403--", "Game Being Updated");
         String trump = "";
         if(GameSetUp.currentRound.trump == null) {
             trump = "trumpNotSet";
@@ -382,6 +401,14 @@ public class GameActivity extends Activity {
 
         else {
             trump = GameSetUp.currentRound.trump.toString();
+        }
+
+        if (Round.trickHistory.size() == 0) {
+            Log.v("--GameActivity414", "trickHistory.size(): " + Round.trickHistory.size());
+            iv_card6.setVisibility(View.INVISIBLE);
+            iv_card7.setVisibility(View.INVISIBLE);
+            iv_card8.setVisibility(View.INVISIBLE);
+            iv_card9.setVisibility(View.INVISIBLE);
         }
 
         //clears cards
@@ -467,7 +494,7 @@ public class GameActivity extends Activity {
         Sets UI to allow user to discard a card
      */
     public static void setUpDiscard() {
-        Log.v("--GameActivity419--", "outPlayer: " + Round.outPlayer);
+        Log.v("--GameActivity496--", "outPlayer: " + Round.outPlayer);
         if (GameSetUp.currentRound.outPlayer == 0){
             GameSetUp.dealerDiscardForRoundStart(GameSetUp.currentRound.turnedUpCard.toString());
             updateGame();
@@ -492,7 +519,6 @@ public class GameActivity extends Activity {
                 assignImage(Round.turnedUpCard.toString(), iv_card1);
                 players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(players.get(0).hand.get(0).toString());
                 players.get(currentRound.currentTrick.currentPlayer).hand.add(Round.turnedUpCard);
-                Log.v("--GameActivity466--", "Human Hand" + players.get(0).hand);
                 assignImage("Back of Card", iv_deck);
                 updateHand();
                 iv_card1.setClickable(false);
@@ -700,10 +726,10 @@ public class GameActivity extends Activity {
     }
 
     public static void updateHand() {
-        Log.v("--GameActivity347--", "Updating hand");
+        Log.v("--GameActivity729--", "Updating hand");
         int handSize = players.get(0).hand.size();
-        Log.v("--GameActivity685--", "Current handSize: " + players.get(0).hand.size());
-        Log.v("--GameActivity693--", "Players current hand: " + players.get(0).hand);
+        //Log.v("--GameActivity731--", "Current handSize: " + players.get(0).hand.size());
+        //Log.v("--GameActivity732--", "Players current hand: " + players.get(0).hand);
 
         if (handSize == 5) {
             assignImage(players.get(0).hand.get(0).toString(), iv_card1);
