@@ -152,30 +152,79 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layoutPassPickUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layoutLinear"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/pass_button3"
+            android:layout_above="@id/layoutLinear"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/white"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:text="Pass"/>
+
+        <Button
+            android:id="@+id/pickup_button2"
+            android:layout_above="@+id/layoutLinear"
+            android:layout_toRightOf="@id/pass_button3"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:text="Pick up"/>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/contWithGame"
-        android:layout_above="@+id/layoutLinear"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_width="120dp"
         android:layout_height="70dp"
         android:text="Continue with Game"/>
 
-    <Button
-        android:id="@+id/pass_button3"
-        android:layout_above="@id/layoutLinear"
-        android:layout_centerHorizontal="true"
-        android:layout_width="70dp"
-        android:layout_height="70dp" />
-
-    <Button
-        android:id="@+id/pickup_button2"
+    <LinearLayout
+        android:id="@+id/layoutGoAlone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/layoutLinear"
-        android:layout_toRightOf="@id/pass_button3"
-        android:layout_width="70dp"
-        android:layout_height="70dp" />
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/goAlone"
+            android:layout_above="@+id/layoutLinear"
+            android:layout_width="70dp"
+            android:layout_height="75dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="Go Alone!"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/notAlone"
+            android:layout_above="@+id/layoutLinear"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:text="Nahh"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"/>
+
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/cardToDiscard"
+        android:id="@+id/textAboveHand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layoutLinear"
