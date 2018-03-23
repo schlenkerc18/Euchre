@@ -6,11 +6,30 @@ import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends Activity {
+    DatabaseHelper myDb;
+    int initializer = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (initializer == 0) {
+            initializeTables();
+        }
+
+        myDb = new DatabaseHelper(this);
+    }
+
+    public void initializeTables() {
+        //setting all tables values to 0
+        myDb.initializeGames();
+        myDb.initializeHands();
+        myDb.initializeTricks();
+        myDb.initializeTrumpCalls();
+        myDb.initializeLoners();
+        myDb.initializeMisc();
+        initializer++;
     }
 
     public void onGameActivity(View v) {
