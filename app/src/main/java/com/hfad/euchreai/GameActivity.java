@@ -240,6 +240,7 @@ public class GameActivity extends Activity {
         assignImage(players.get(0).hand.get(4).toString(), iv_card5);
 
         //trumpPicture
+        Log.v("--GameActivity243--", "Current Trump: " + Round.currentTrick.trump);
         showTrump(Round.currentTrick.trump);
 
         iv_card6.setVisibility(View.INVISIBLE);
@@ -276,6 +277,7 @@ public class GameActivity extends Activity {
 
     //this function shows the Trump for the round on the bottom right of screen
     public static void showTrump(Cards.SUIT trump) {
+        Log.v("--GameActivity280", "Is showTrump being called???");
         if (trump == Cards.SUIT.CLUBS) {
             trumpPicture.setImageResource(R.drawable.clubs_icon);
         }
@@ -333,8 +335,8 @@ public class GameActivity extends Activity {
             return;
         }
 
-        else if(GameSetUp.currentRound.dealerNeedsToDiscard){
-            Log.v("---GameActivity344---", "Dealer discard");
+        else if(game.currentRound.dealerNeedsToDiscard){
+            Log.v("---GameActivity337---", "Dealer discard");
             setUpDiscard();
             return;
         }
@@ -352,7 +354,7 @@ public class GameActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     GameSetUp.humanPreRoundPass();
-                    Log.v("--GameActivity334--", "User passed");
+                    Log.v("--GameActivity355--", "User passed");
                     showTrump(Round.currentTrick.trump);
                     pickup_button2.setVisibility(View.INVISIBLE);
                     pass_button3.setVisibility(View.INVISIBLE);
@@ -364,7 +366,7 @@ public class GameActivity extends Activity {
                 public void onClick(View view) {
                     GameSetUp.humanPreRoundCall();
                     addKittyToHand();
-                    Log.v("--GameActivity345--", "User picked up");
+                    Log.v("--GameActivity367--", "User picked up");
                     showTrump(Round.turnedUpCard.suit);
                     pickup_button2.setVisibility(View.INVISIBLE);
                     pass_button3.setVisibility(View.INVISIBLE);
@@ -403,13 +405,13 @@ public class GameActivity extends Activity {
             trump = GameSetUp.currentRound.trump.toString();
         }
 
-        if (Round.trickHistory.size() == 0) {
-            Log.v("--GameActivity414", "trickHistory.size(): " + Round.trickHistory.size());
-            iv_card6.setVisibility(View.INVISIBLE);
-            iv_card7.setVisibility(View.INVISIBLE);
-            iv_card8.setVisibility(View.INVISIBLE);
-            iv_card9.setVisibility(View.INVISIBLE);
-        }
+//        if (Round.trickHistory.size() == 0) {
+//            Log.v("--GameActivity414", "trickHistory.size(): " + Round.trickHistory.size());
+//            iv_card6.setVisibility(View.INVISIBLE);
+//            iv_card7.setVisibility(View.INVISIBLE);
+//            iv_card8.setVisibility(View.INVISIBLE);
+//            iv_card9.setVisibility(View.INVISIBLE);
+//        }
 
         //clears cards
         if (Trick.isOver()) {
@@ -436,13 +438,19 @@ public class GameActivity extends Activity {
         boolean[] cardsClickable = {false, false, false, false, false};
         if (!GameSetUp.currentRound.isInPreGameState && GameSetUp.currentRound.outPlayer != 0) {
             cardsClickable = game.getPlayableCardsForHuman();
-            //Log.v("--GameActivity382--", "cardsClickable: " + Arrays.toString(cardsClickable));
+            Log.v("--GameActivity382--", "cardsClickable: " + Arrays.toString(cardsClickable));
         }
         setPlayersCardsClickable(cardsClickable);
 
+        Log.v("--GameActivity443", "Outplayer: " + game.currentRound.outPlayer);
         if (game.currentRound.outPlayer == 0) {
             String button = "contWithGame";
             setUpButtons(button);
+            iv_card1.setVisibility(View.INVISIBLE);
+            iv_card2.setVisibility(View.INVISIBLE);
+            iv_card3.setVisibility(View.INVISIBLE);
+            iv_card4.setVisibility(View.INVISIBLE);
+            iv_card5.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -495,14 +503,20 @@ public class GameActivity extends Activity {
      */
     public static void setUpDiscard() {
         Log.v("--GameActivity496--", "outPlayer: " + Round.outPlayer);
-        if (GameSetUp.currentRound.outPlayer == 0){
-            GameSetUp.dealerDiscardForRoundStart(GameSetUp.currentRound.turnedUpCard.toString());
+
+        if (game.currentRound.outPlayer == 0){
+            game.dealerDiscardForRoundStart(GameSetUp.currentRound.turnedUpCard.toString());
             updateGame();
             return;
         }
 
         updateGame();
-        addKittyToHand();
+
+        //need to put addKittyToHand inside of conditional
+        if (game.currentRound.dealer == 0) {
+            Log.v("--GameActivity510--", "Adding kitty to hand");
+            addKittyToHand();
+        }
     }
 
     /*
