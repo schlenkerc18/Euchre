@@ -31,6 +31,7 @@ public class GameActivity extends Activity {
     public static int[] tricks = new int[2];
     public static ArrayList<Cards> humanHand;
     static GameSetUp game = new GameSetUp();
+    static int cardsPlayed;
 
     /*
         -creates an instance of a new Game
@@ -61,7 +62,7 @@ public class GameActivity extends Activity {
         notAlone = (Button) findViewById(R.id.notAlone);
         notAlone.setVisibility(View.INVISIBLE);
 
-        //setting up score and trick id's
+        //setting up score and trick id's, and dealer
         yourScore = (TextView) findViewById(R.id.yourScore);
         compScore = (TextView) findViewById(R.id.compScore);
         yourTricks = (TextView) findViewById(R.id.yourTricks);
@@ -245,12 +246,14 @@ public class GameActivity extends Activity {
 
         //trumpPicture
         Log.v("--GameActivity243--", "Current Trump: " + Round.currentTrick.trump);
-        showTrump(Round.currentTrick.trump);
+        showTrump(game.currentRound.currentTrick.trump);
+        printDealer();
 
         iv_card6.setVisibility(View.INVISIBLE);
         iv_card7.setVisibility(View.INVISIBLE);
         iv_card8.setVisibility(View.INVISIBLE);
         iv_card9.setVisibility(View.INVISIBLE);
+        clearBoard();
 
         updateGame();
         setUpIntitialRound();
@@ -261,6 +264,7 @@ public class GameActivity extends Activity {
      */
     public static void showAIPlaycard(String cardToShow) {
         int playerIndex = currentRound.currentTrick.currentPlayer;
+        cardsPlayed++;
 
         for (int i = 0; i < 4; i++) {
             if (playerIndex == 1) {
@@ -277,6 +281,8 @@ public class GameActivity extends Activity {
                 assignImage(cardToShow, iv_card8);
             }
         }
+
+        updateGame();
     }
 
     //this function shows the Trump for the round on the bottom right of screen
@@ -306,6 +312,8 @@ public class GameActivity extends Activity {
         - calls setUpInitialRound
      */
     public static void cardPlayed(String cardText) {
+        cardsPlayed++;
+        clearBoard();
         game.humanPlayCard(cardText);
 
         iv_card9.setVisibility(View.VISIBLE);
@@ -324,6 +332,22 @@ public class GameActivity extends Activity {
         setUpIntitialRound();
     }
 
+    public static void clearBoard() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 1s = 1000ms
+                if ((cardsPlayed % 4) == 0) {
+                    iv_card6.setVisibility(View.INVISIBLE);
+                    iv_card7.setVisibility(View.INVISIBLE);
+                    iv_card8.setVisibility(View.INVISIBLE);
+                    iv_card9.setVisibility(View.INVISIBLE);
+                }
+            }
+        }, 1000);
+    }
+
     /*
         -if game is not in preGameState, calls updateGame()
         -if dealerNeedsToDiscard, calls setUpDiscard()
@@ -340,7 +364,7 @@ public class GameActivity extends Activity {
         }
 
         else if(game.currentRound.dealerNeedsToDiscard){
-            Log.v("---GameActivity339---", "Dealer discard");
+            Log.v("---GameActivity339---", "Dealer discard: " + game.currentRound.currentTrick.currentPlayer);
             setUpDiscard();
             return;
         }
@@ -400,19 +424,14 @@ public class GameActivity extends Activity {
         updateHand();
         Log.v("--GameActivity403--", "Game Being Updated");
         String trump = "";
-        if(GameSetUp.currentRound.trump == null) {
+        if(game.currentRound.trump == null) {
             trump = "trumpNotSet";
         } else {
             showTrump(game.currentRound.trump);
         }
 
-        //clears cards
-        if (Trick.isOver()) {
-            iv_card6.setVisibility(View.INVISIBLE);
-            iv_card7.setVisibility(View.INVISIBLE);
-            iv_card8.setVisibility(View.INVISIBLE);
-            iv_card9.setVisibility(View.INVISIBLE);
-        }
+        Log.v("--GameActivit413", "cardsPlayed size: " + cardsPlayed);
+        clearBoard();
 
         //resets scores
         score[0] = GameSetUp.score[0];
@@ -425,17 +444,18 @@ public class GameActivity extends Activity {
         yourTricks.setText(Integer.toString(tricks[0]));
         tricks[1] = GameSetUp.currentRound.trickCount[1];
         compTricks.setText(Integer.toString(tricks[1]));
+        printDealer();
 
         //Log.v("--GameActivity377--", "Players current hand: " + players.get(0).hand);
 
         boolean[] cardsClickable = {false, false, false, false, false};
-        if (!GameSetUp.currentRound.isInPreGameState && GameSetUp.currentRound.outPlayer != 0) {
+        if (!game.currentRound.isInPreGameState && game.currentRound.outPlayer != 0) {
             cardsClickable = game.getPlayableCardsForHuman();
-            Log.v("--GameActivity382--", "cardsClickable: " + Arrays.toString(cardsClickable));
+            Log.v("--GameActivity435--", "cardsClickable: " + Arrays.toString(cardsClickable));
         }
         setPlayersCardsClickable(cardsClickable);
 
-        Log.v("--GameActivity443", "Outplayer: " + game.currentRound.outPlayer);
+        Log.v("--GameActivity439", "Outplayer: " + game.currentRound.outPlayer);
         if (game.currentRound.outPlayer == 0) {
             String button = "contWithGame";
             setUpButtons(button);
@@ -497,23 +517,23 @@ public class GameActivity extends Activity {
     /*
         print function to show which player is dealing
      */
-    private String printDealer() {
+    private static String printDealer() {
         String out = "";
         switch(GameSetUp.currentRound.dealer){
             case 0:
-                Toast.makeText(GameActivity.this, "You are dealing", Toast.LENGTH_LONG).show();
+                //Toast.makeText(GameActivity.this, "You are dealing", Toast.LENGTH_LONG).show();
                 break;
             case 1:
-                Toast.makeText(GameActivity.this, "Left is dealing", Toast.LENGTH_LONG).show();
+                //Toast.makeText(GameActivity.this, "Left is dealing", Toast.LENGTH_LONG).show();
                 break;
             case 2:
-                Toast.makeText(GameActivity.this, "Top is dealing", Toast.LENGTH_LONG).show();
+                //Toast.makeText(GameActivity.this, "Top is dealing", Toast.LENGTH_LONG).show();
                 break;
             case 3:
-                Toast.makeText(GameActivity.this, "Right is dealing", Toast.LENGTH_LONG).show();
+                //Toast.makeText(GameActivity.this, "Right is dealing", Toast.LENGTH_LONG).show();
                 break;
             default:
-                System.out.println("Problem with switch for printing dealer!!!!");
+                //System.out.println("Problem with switch for printing dealer!!!!");
         }
         return out;
     }
