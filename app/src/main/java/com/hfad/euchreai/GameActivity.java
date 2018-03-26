@@ -25,7 +25,7 @@ import static com.hfad.euchreai.GameSetUp.score;
 public class GameActivity extends Activity {
 
     static ImageView iv_deck, iv_card1, iv_card2, iv_card3, iv_card4, iv_card5, iv_card6, iv_card7, iv_card8, iv_card9, iv_card10, trumpPicture;
-    static TextView textAboveHand, yourTricks, compTricks, yourScore, compScore;
+    static TextView textAboveHand, yourTricks, compTricks, yourScore, compScore, dealer;
     static Button pass_button3, pickup_button2, contWithGame, goAlone, notAlone;
     public static int[] score = new int[2];
     public static int[] tricks = new int[2];
@@ -67,6 +67,7 @@ public class GameActivity extends Activity {
         compScore = (TextView) findViewById(R.id.compScore);
         yourTricks = (TextView) findViewById(R.id.yourTricks);
         compTricks = (TextView) findViewById(R.id.compTricks);
+        dealer = (TextView) findViewById(R.id.dealer);
 
 
         //text that goes above hand
@@ -521,15 +522,19 @@ public class GameActivity extends Activity {
         String out = "";
         switch(GameSetUp.currentRound.dealer){
             case 0:
+                dealer.setText("Dealer: You");
                 //Toast.makeText(GameActivity.this, "You are dealing", Toast.LENGTH_LONG).show();
                 break;
             case 1:
+                dealer.setText("Dealer: Left Player");
                 //Toast.makeText(GameActivity.this, "Left is dealing", Toast.LENGTH_LONG).show();
                 break;
             case 2:
+                dealer.setText("Dealer: Top Player");
                 //Toast.makeText(GameActivity.this, "Top is dealing", Toast.LENGTH_LONG).show();
                 break;
             case 3:
+                dealer.setText("Dealer; Right Player");
                 //Toast.makeText(GameActivity.this, "Right is dealing", Toast.LENGTH_LONG).show();
                 break;
             default:
