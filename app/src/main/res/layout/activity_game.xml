@@ -28,6 +28,23 @@
         android:textColor="@color/white"/>
 
     <TextView
+        android:id="@+id/leadingSuit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dealer"
+        android:layout_toRightOf="@+id/iv_deck"
+        android:text="Leading Suit: "
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/leadingCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/leadingSuit"
+        android:layout_below="@+id/dealer"
+        android:textColor="@color/white" />
+
+    <TextView
         android:id="@+id/leftPlayer"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="450dp"

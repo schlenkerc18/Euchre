@@ -25,7 +25,7 @@ import static com.hfad.euchreai.GameSetUp.score;
 public class GameActivity extends Activity {
 
     static ImageView iv_deck, iv_card1, iv_card2, iv_card3, iv_card4, iv_card5, iv_card6, iv_card7, iv_card8, iv_card9, iv_card10, trumpPicture;
-    static TextView textAboveHand, yourTricks, compTricks, yourScore, compScore, dealer;
+    static TextView textAboveHand, yourTricks, compTricks, yourScore, compScore, dealer, leadingCard;
     static Button pass_button3, pickup_button2, contWithGame, goAlone, notAlone;
     public static int[] score = new int[2];
     public static int[] tricks = new int[2];
@@ -68,6 +68,7 @@ public class GameActivity extends Activity {
         yourTricks = (TextView) findViewById(R.id.yourTricks);
         compTricks = (TextView) findViewById(R.id.compTricks);
         dealer = (TextView) findViewById(R.id.dealer);
+        leadingCard = (TextView) findViewById(R.id.leadingCard);
 
 
         //text that goes above hand
@@ -247,7 +248,6 @@ public class GameActivity extends Activity {
 
         //trumpPicture
         Log.v("--GameActivity243--", "Current Trump: " + Round.currentTrick.trump);
-        showTrump(game.currentRound.currentTrick.trump);
         printDealer();
 
         iv_card6.setVisibility(View.INVISIBLE);
@@ -355,20 +355,21 @@ public class GameActivity extends Activity {
         -if not trump has been called by computer, will prompt user to pickUp or pass
      */
     private static void setUpIntitialRound() {
-        Log.v("----GameActivity327----", "Initial Round ");
+        Log.v("----GameActivity358----", "Initial Round ");
         //Toast.makeText(GameActivity.this, "Initial Round", Toast.LENGTH_LONG).show();
 
         if(!GameSetUp.currentRound.isInPreGameState){
-            Log.v("--GameActivity331--", "Update");
+            Log.v("--GameActivity362--", "Update");
             updateGame();
             return;
         }
 
         else if(game.currentRound.dealerNeedsToDiscard){
-            Log.v("---GameActivity339---", "Dealer discard: " + game.currentRound.currentTrick.currentPlayer);
+            Log.v("---GameActivity368---", "Dealer discard: " + game.currentRound.currentTrick.currentPlayer);
             setUpDiscard();
             return;
         }
+        game.makeGameReadyForHuman();
 
         boolean[] disabled = {false,false,false,false,false};
         setPlayersCardsClickable(disabled);
@@ -422,8 +423,11 @@ public class GameActivity extends Activity {
         - sets humanPlayable cards to clickable
      */
     private static void updateGame() {
+        if (game.currentRound.currentTrick.leadingSuit != null) {
+            leadingCard.setText(game.currentRound.currentTrick.leadingSuit.toString());
+        }
         updateHand();
-        Log.v("--GameActivity403--", "Game Being Updated");
+        Log.v("--GameActivity426--", "Game Being Updated");
         String trump = "";
         if(game.currentRound.trump == null) {
             trump = "trumpNotSet";
@@ -431,7 +435,7 @@ public class GameActivity extends Activity {
             showTrump(game.currentRound.trump);
         }
 
-        Log.v("--GameActivit413", "cardsPlayed size: " + cardsPlayed);
+        Log.v("--GameActivit434", "cardsPlayed size: " + cardsPlayed);
         clearBoard();
 
         //resets scores
@@ -445,6 +449,9 @@ public class GameActivity extends Activity {
         yourTricks.setText(Integer.toString(tricks[0]));
         tricks[1] = GameSetUp.currentRound.trickCount[1];
         compTricks.setText(Integer.toString(tricks[1]));
+
+        //show trump and dealer
+        showTrump(game.currentRound.currentTrick.trump);
         printDealer();
 
         //Log.v("--GameActivity377--", "Players current hand: " + players.get(0).hand);
@@ -452,11 +459,11 @@ public class GameActivity extends Activity {
         boolean[] cardsClickable = {false, false, false, false, false};
         if (!game.currentRound.isInPreGameState && game.currentRound.outPlayer != 0) {
             cardsClickable = game.getPlayableCardsForHuman();
-            Log.v("--GameActivity435--", "cardsClickable: " + Arrays.toString(cardsClickable));
+            Log.v("--GameActivity457--", "cardsClickable: " + Arrays.toString(cardsClickable));
         }
         setPlayersCardsClickable(cardsClickable);
 
-        Log.v("--GameActivity439", "Outplayer: " + game.currentRound.outPlayer);
+        Log.v("--GameActivity462", "Outplayer: " + game.currentRound.outPlayer);
         if (game.currentRound.outPlayer == 0) {
             String button = "contWithGame";
             setUpButtons(button);
