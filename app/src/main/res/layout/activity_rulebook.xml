@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_rulebook"
     android:layout_width="match_parent"
@@ -10,4 +10,77 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.hfad.euchreai.RulebookActivity">
 
-</RelativeLayout>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:weightSum="6"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/objectOfGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OBJECT OF THE GAME:
+The goal is to win at least three tricks. If the side that fixed the trump fails to get three tricks, it is said to be euchred: Winning all five tricks is called a march."/>
+
+            <TextView
+                android:id="@+id/rankOfCards"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RANK OF CARDS:
+The highest trump is the jack of the trump suit, called the right bower.  The second-highest trump is the jack of the other suit of the same color called the left bower. (Example: If diamonds are trumps, the right bower is J♦ and left bower is J♥.) The remaining trumps, and also the plain suits, rank as follows: A (high), K, Q, J, 10, 9, 8, 7. If a joker has been added to the pack, it acts as the highest trump."/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CARD VALUES/SCORING:
+The following shows all scoring situations:
+
+Partnership making trump wins 3 or 4 tricks – 1 point
+Partnership making trump wins 5 tricks – 2 points
+Lone hand wins 3 or 4 tricks – 1 point
+Lone hand wins 5 tricks – 4 points
+Partnership or lone hand is euchred, opponents score 2 points
+
+The first player or partnership to score 5, 7 or 10 points, as agreed beforehand, wins the game. In the 5-point game, a side is said to be at the bridge when it has scored 4 and the opponents have scored 2 or less."/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MAKING THE TRUMP:
+Beginning with the player to the left of the dealer, each player passes or accepts the turn-up as trump. An opponent of the dealer accepts by saying I order it up. The partner of the dealer accepts by saying, I assist.  The dealer accepts by making his discard, called taking it up.
+
+The dealer signifies refusal of the turn-up by removing the card from the top and placing it (face up) partially underneath the pack; this is called turning it down.
+
+If all four players pass in the first round, each player in turn, starting with the player to the dealer's left, has the option of passing again or of naming the trump suit. The rejected suit may not be named. Declaring the other suit of the same color as the reject is called making it next; declaring a suit of opposite color is called crossing it.
+
+If all four players pass in the second round, the cards are gathered and shuffled, and the next dealer deals. Once the trump is fixed, either by acceptance of the turn-up or by the naming of another suit, the turn-up is rejected, the bidding ends and play begins."/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PLAYING ALONE:
+If the player who fixes the trump suit believes it will be to his side's advantage to play without the help of his partner's cards, the player exercises this option by declaring alone distinctly at the time of making the trump. This player's partner then turns his cards face down and does not participate in the play."/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="THE PLAY:
+The opening lead is made by the player to the dealer's left, or if this player's partner is playing alone, it is made by the player across from the dealer. If he can, each player must follow suit to a lead. If unable to follow suit, the player may trump or discard any card. A trick is won by the highest card of the suit led, or, if it contains trumps, by the highest trump. The winner of a trick leads next."/>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>
