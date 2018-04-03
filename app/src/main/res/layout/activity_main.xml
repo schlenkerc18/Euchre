@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/euchre_logo1"
+    android:background="@drawable/felt_background"
     tools:context="com.hfad.euchreai.MainActivity">
 
     <Button
@@ -27,7 +27,7 @@
         android:layout_width="140dp"
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"
-        android:text="Statistics"/>
+        android:text="Statistics" />
 
     <Button
         android:id="@+id/activity_rulebook"
@@ -36,5 +36,5 @@
         android:layout_width="140dp"
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"
-        android:text="Rulebook"/>
+        android:text="Rulebook" />
 </RelativeLayout>
