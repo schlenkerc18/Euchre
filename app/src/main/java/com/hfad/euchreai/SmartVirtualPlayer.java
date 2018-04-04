@@ -14,6 +14,9 @@ public class SmartVirtualPlayer extends Player {
         super(name);
     }
 
+    /*
+        returns a card for SVP to play
+     */
     public Cards getCardToPlay(Trick trick) {
         Cards cardToPlayMax = new NullCard();
         Cards cardToPlayMin = null;
@@ -60,6 +63,9 @@ public class SmartVirtualPlayer extends Player {
         return cardToPlayMin;
     }
 
+    /*
+        method to determine whether SVP will pick up kitty
+     */
     public boolean pickUp(Cards kitty){
         ArrayList<Cards> hand = super.hand;
         Cards.SUIT choice = null;
@@ -92,6 +98,9 @@ public class SmartVirtualPlayer extends Player {
         return false;
     }
 
+    /*
+        method that will decide whether or not SVP picks up as dealer
+     */
     public boolean pickUpAsDealer(Cards kitty){
         ArrayList<Cards> hand = super.hand;
         int max = Math.max(Math.max(handValue(hand, Cards.SUIT.CLUBS), handValue(hand, Cards.SUIT.SPADES)),
@@ -117,6 +126,9 @@ public class SmartVirtualPlayer extends Player {
         return false;
     }
 
+    /*
+        discards the card with the lowest value
+     */
     public Cards discardDecider(Cards kitty) {
         ArrayList<Cards> hand = super.hand;
         Cards ret = kitty;
@@ -139,6 +151,11 @@ public class SmartVirtualPlayer extends Player {
         return ret;
     }
 
+    /*
+        This method will find the value for the players hand based
+        on the remaining callable suits and call the trump for which their
+        hand has the highest value in
+     */
     public Cards.SUIT trumpDecider(Cards.SUIT invalid) {
         ArrayList<Cards> hand = super.hand;
         Cards.SUIT choice = null;
@@ -167,6 +184,9 @@ public class SmartVirtualPlayer extends Player {
         return choice;
     }
 
+    /*
+        SVP will call if value is greater than 22
+     */
     public boolean callDecider(Cards.SUIT invalid){
         ArrayList<Cards> hand = super.hand;
         int max = 0;
@@ -190,11 +210,17 @@ public class SmartVirtualPlayer extends Player {
         return max > 22;
     }
 
+    /*
+        boolean return based on value of svp's hand
+     */
     public boolean goAloneDecider(Cards.SUIT trump){
-        //stub value being passed being going alone is buggy
+        //stub value being passed being going alone is buggy, value was 35
         return handValue(super.hand,trump) > 150;
     }
 
+    /*
+        method for obtaining value of svp's hand
+     */
     public int handValue (ArrayList<Cards> hand, Cards.SUIT trump) {
         int val = 0;
 
