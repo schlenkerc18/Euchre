@@ -229,6 +229,9 @@ public class GameActivity extends Activity {
         }
     }
 
+    /*
+        Resets UI for the beggining of a new Round
+     */
     public static void showRoundReset() {
         Log.v("--GameActivity226--", "Resettig UI....");
 
@@ -286,7 +289,9 @@ public class GameActivity extends Activity {
         updateGame();
     }
 
-    //this function shows the Trump for the round on the bottom right of screen
+    /*
+        shows trump for the round on the bottom right of screen
+     */
     public static void showTrump(Cards.SUIT trump) {
         Log.v("--GameActivity280", "Is showTrump being called???");
         if (trump == Cards.SUIT.CLUBS) {
@@ -333,6 +338,9 @@ public class GameActivity extends Activity {
         setUpIntitialRound();
     }
 
+    /*
+        sets all 4 cards to invisible
+     */
     public static void clearBoard() {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -404,6 +412,9 @@ public class GameActivity extends Activity {
         }
     }
 
+    /*
+        adds Kitty to Human hand
+     */
     public static void addKittyToHand() {
         assignImage(Round.turnedUpCard.toString(), iv_card10);
         iv_card1.setClickable(true);
@@ -476,6 +487,10 @@ public class GameActivity extends Activity {
         }
     }
 
+    /*
+        sets up buttons that the user will need to press
+        in order to continue with game
+     */
     public static void setUpButtons(String text) {
         if (text == "contWithGame") {
             contWithGame.setVisibility(View.VISIBLE);
@@ -724,6 +739,9 @@ public class GameActivity extends Activity {
         ptd.show();
     }
 
+    /*
+        sets Player cards clickable based on clickable array
+     */
     public static void setPlayersCardsClickable(boolean[] clickable){
         if (clickable.length > 0) {
             if (clickable[0] == true) {
@@ -791,6 +809,9 @@ public class GameActivity extends Activity {
         }
     }
 
+    /*
+        shifts all cards left and updates user's hand
+     */
     public static void updateHand() {
         Log.v("--GameActivity729--", "Updating hand");
         int handSize = players.get(0).hand.size();
