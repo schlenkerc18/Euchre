@@ -30,6 +30,9 @@ public class Round {
     public static boolean dealerNeedsToDiscard = false;
     public static int outPlayer = -1;
 
+    /*
+        Sets up a new Round to be played.
+     */
     public Round(ArrayList<Cards> allCardsIn, ArrayList<Player> playersIn, int dealerIn){
         allCards = allCardsIn;
         players = playersIn;
@@ -47,6 +50,9 @@ public class Round {
         trickCount[1] = 0;
     }
 
+    /*
+        fills callableSuits[] with the suits that are still available to be called
+     */
     private void fillCallableSuits() {
         int index = 0;
         if (!(turnedUpCard.suit==Cards.SUIT.CLUBS)) {
@@ -69,6 +75,11 @@ public class Round {
         }
     }
 
+    /*
+        if currentPlayer is dealer and isCardTurnedUp, sets is isCardTurnedUp to false.
+        Increments turn.
+        If dealer needs to call and !isCardTurnedUP, they are forced to call
+     */
     public void preRoundPass() {
         if (currentTrick.currentPlayer == dealer) {
             if (isCardTurnedUp) {
@@ -83,11 +94,16 @@ public class Round {
         }
     }
 
+    /*
+        boolean returns true if player is AI, false otherwise
+     */
     public boolean isCurrentPlayerAI() {
         return (players.get(currentTrick.currentPlayer) instanceof SmartVirtualPlayer);
     }
 
-    // used when the card is turned up
+    /*
+        this method is used when the card is turned up
+     */
     public void preRoundCall() {
         trump = turnedUpCard.suit;
         currentTrick.trump = trump;
@@ -111,7 +127,9 @@ public class Round {
         }
     }
 
-    // used when the card is turned down
+    /*
+        this method is called when card is turned down
+     */
     public void preRoundCall(Cards.SUIT toBeTrump) {
         trump = toBeTrump;
         currentTrick.trump = trump;
@@ -119,6 +137,11 @@ public class Round {
         Log.v("--Round119--", "card turned down:" + trump);
     }
 
+    /*
+        Sets calling team.
+        Changes isInPreGameState to true.
+        Sets leadingPlayer and currentPlayer
+     */
     private void prepareForRoundStart() {
         callingTeam = currentTrick.currentPlayer % 2;
         isInPreGameState = false;
@@ -130,6 +153,11 @@ public class Round {
         currentTrick.currentPlayer = currentTrick.leadingPlayer;
     }
 
+    /*
+        Sets calling team.
+        Changes isInPreGameState to true.
+        Allows dealer to discard a card.
+     */
     public void dealerDiscardForRoundStart(String c) {
         callingTeam = currentTrick.currentPlayer % 2;
         isInPreGameState = false;
@@ -147,6 +175,10 @@ public class Round {
 
     }
 
+    /*
+        calls playCardForCurrentPlayer from Trick class
+        Checks if trick is over
+     */
     public void playCard(Cards c) {
         //System.out.println("playing...Round149...");
         currentTrick.playCardForCurrentPlayer(c);
@@ -158,6 +190,10 @@ public class Round {
         }
     }
 
+    /*
+        boolean returns true if trickHistory is 5 and then clears trickHistory
+        Otherwise returns false
+     */
     public boolean isOver(){
         if (trickHistory.size() == 5) {
             trickHistory.clear();
@@ -166,6 +202,11 @@ public class Round {
         return false;
     }
 
+    /*
+        scores round based on trickCount for each and team
+        Depends on which team ordered it up and whether or not
+        a player went alone
+     */
     public int[] scoreRound(){
         int[] ans = new int[2];
         if(trickCount[callingTeam]+trickCount[(callingTeam+1)%2]<5){
@@ -192,6 +233,9 @@ public class Round {
         return ans;
     }
 
+    /*
+        puts cards into random order
+     */
     public void shuffle(){
         Random rand = new Random();
         boolean[] used = new boolean[24];
@@ -211,7 +255,9 @@ public class Round {
         }
     }
 
-
+    /*
+        deals 5 cards to each player
+     */
     public void deal(){
         for (int i = 0; i < 5; i++){
             for (int j = 0; j < 4; j++) {
@@ -220,10 +266,16 @@ public class Round {
         }
     }
 
+    /*
+        returns card on top of deck
+     */
     public Cards draw(){
         return deck.pop();
     }
 
+    /*
+        returns instance of new round
+     */
     public Round getNextRound() {
         Log.v("--Round224--", "Getting new Round");
         Round round = new Round(allCards, players, (dealer+1) % 4);
