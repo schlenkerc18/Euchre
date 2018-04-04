@@ -12,11 +12,17 @@ public class Player {
     public String name;
     public ArrayList<Cards> hand;
 
+    /*
+        Constructor
+     */
     public Player(String name) {
         this.name = name;
         this.hand = new ArrayList<Cards>();
     }
 
+    /*
+        returns array of the cards in hand that match the given suit
+     */
     public ArrayList<Cards> getCardsInHandOfSuit(Cards.SUIT suit) {
 
         ArrayList<Cards> arr = new ArrayList<Cards>();
@@ -30,6 +36,9 @@ public class Player {
         return arr;
     }
 
+    /*
+        returns highest valued card of given suit
+     */
     public Cards getHighestValueCardOfSuit(Cards.SUIT suit) {
         Cards highestCard = null;
         for (Cards c: hand) {
@@ -40,6 +49,9 @@ public class Player {
         return highestCard;
     }
 
+    /*
+        returns lowest valued card of given suit
+     */
     public Cards getLowestValueCardOfSuit(Cards.SUIT suit) {
         Cards lowestCard = null;
         for (Cards c: hand) {
@@ -50,7 +62,10 @@ public class Player {
         return lowestCard;
     }
 
-    // used for the leading card
+    /*
+        returns highest value card.
+        Used for leading card
+     */
     public Cards getHighestValueCard() {
         Cards highestCard = null;
 
@@ -63,7 +78,10 @@ public class Player {
         return highestCard;
     }
 
-    //used for playing off
+    /*
+        returns lowest value card
+        used for playing off
+     */
     public Cards getLowestValueCard() {
         Cards lowestCard = null;
 
@@ -76,6 +94,10 @@ public class Player {
         return lowestCard;
     }
 
+    /*
+        boolean method to determine whether player has a
+        card of that suit
+     */
     public boolean hasCardOfSuit(Cards.SUIT suit) {
 
         for (Cards c: hand) {
@@ -87,14 +109,19 @@ public class Player {
         return false;
     }
 
+    /*
+        returns array of cards that the player can play.
+        This means that playing that card will not break
+        any euchre rules
+     */
     public boolean[] getPlayableCards(Cards.SUIT leadingSuit, Cards.SUIT trumpSuit) {
         boolean[] playableCards = new boolean[hand.size()];
-        Log.v("--Player--", "Size of Hand: " + (hand.size()));
+        //Log.v("--Player--", "Size of Hand: " + (hand.size()));
         boolean sameSuit = false;
         Cards.SUIT sameColorAsTrump = Cards.getSameColorSuit(trumpSuit);
         Cards c;
 
-        Log.v("---Player96---", "leadingSuit: " + leadingSuit);
+        Log.v("---Player97---", "leadingSuit: " + leadingSuit);
 
         for (int i = 0; i < hand.size(); i++) {
             c = hand.get(i);
@@ -122,18 +149,24 @@ public class Player {
 
     }
 
+    /*
+        removes card from hand
+     */
     public void removeCardFromHand(Cards card) {
         hand.remove(card);
     }
 
+    /*
+        Removes card from hand in the ArrayList
+     */
     public Cards removeCardFromHand(String cardString){
         Cards cardToReturn = null;
-        for(int q = 0; q < hand.size(); q++){
-            cardToReturn = hand.get(q);
-            System.out.println("CardToReturn...Player131: " + cardToReturn.toString());
+        for(int i = 0; i < hand.size(); i++){
+            cardToReturn = hand.get(i);
+            //System.out.println("CardToReturn...Player133: " + cardToReturn.toString());
             if(cardToReturn.toString().equals(cardString)){
-                Log.v("---Player133---", "cardBeingRemoved: " + hand.get(q));
-                hand.remove(q);
+                Log.v("---Player135---", "cardBeingRemoved: " + hand.get(i));
+                hand.remove(i);
                 return cardToReturn;
             }
         }
