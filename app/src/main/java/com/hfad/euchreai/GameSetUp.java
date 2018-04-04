@@ -17,16 +17,23 @@ public class GameSetUp {
     static ArrayList<Round> roundHistory = new ArrayList<Round>();
     public static int[] score = new int[2];
 
+    /*
+        sets up Game by adding cards, players, calling instance of new Round,
+        initializing scores, and making game ready for human
+     */
     public GameSetUp() {
         setUpAllCards();
         setUpPlayers();
         currentRound = new Round(allCards, players, 0);
         score[0] = 0;
         score[1] = 0;
-        Log.v("---GameSetUp26", "is GameSetUp() being called??");
+        //Log.v("---GameSetUp26", "is GameSetUp() being called??");
         makeGameReadyForHuman();
     }
 
+    /*
+        boolean method to determine if game is over
+     */
     public boolean isOver() {
         if (score[0] >= 10) {
             return true;
@@ -48,6 +55,9 @@ public class GameSetUp {
         return -1;
     }
 
+    /*
+        sets up deck of 24 cards
+     */
     private void setUpAllCards() {
         for (int i = 9; i < 15; i++) {
             allCards.add(new Cards(Cards.SUIT.CLUBS, i));
@@ -56,9 +66,12 @@ public class GameSetUp {
             allCards.add(new Cards(Cards.SUIT.SPADES, i));
         }
 
-        Log.v("--GameSetUp58--", "Cards" + allCards.toString());
+        //Log.v("--GameSetUp58--", "Cards" + allCards.toString());
     }
 
+    /*
+        adds all 4 players to game
+     */
     private void setUpPlayers() {
         players.add(new Player("Human"));
         players.add(new SmartVirtualPlayer("AI 1"));
@@ -66,70 +79,98 @@ public class GameSetUp {
         players.add(new SmartVirtualPlayer("AI 3"));
     }
 
+    /*
+        When it is not the human's turn, AI will either playPreRound or play a card
+     */
     public static void makeGameReadyForHuman() {
         //Log.v("--GameSetUp69--", "makeGameReadyForHuman(): " + players.get(currentRound.currentTrick.currentPlayer));
         players.get(currentRound.currentTrick.currentPlayer);
         while (isCurrentPlayerAI() && currentRound.isInPreGameState) {
             makeAIPlayPreRound();
-            Log.v("--GameSetUp89--", "making AI play pre round...");
+            Log.v("--GameSetUp74--", "making AI play pre round...");
         }
 
         while (isCurrentPlayerAI() && !currentRound.isInPreGameState) {
             makeAIPlay();
-            Log.v("--GameSetUp94--", "making AI play...");
+            Log.v("--GameSetUp79--", "making AI play...");
         }
 
 
         // there is a possible case that AI finished round and need to do pregame now
         while (isCurrentPlayerAI() && currentRound.isInPreGameState) {
             makeAIPlayPreRound();
-            Log.v("--GameSetUp101--", "making AI play pre round...");
+            Log.v("--GameSetUp86--", "making AI play pre round...");
         }
 
         while (isCurrentPlayerAI() && !currentRound.isInPreGameState) {
             makeAIPlay();
-            Log.v("--GameSetUp106--", "making AI play...");
+            Log.v("--GameSetUp91--", "making AI play...");
         }
     }
 
+    /*
+        Allows dealer to discard.
+        Makes game ready for human.
+     */
     public static void dealerDiscardForRoundStart(String c) {
         currentRound.dealerDiscardForRoundStart(c);
         makeGameReadyForHuman();
     }
 
     public static void humanPlayCard(String cardBeingPlayed) {
-        Log.v("----testGameSetUp88----", "Card being played: " + cardBeingPlayed);
+        Log.v("--GameSetUp101--", "Card being played: " + cardBeingPlayed);
         Cards playedCard = players.get(currentRound.currentTrick.currentPlayer).removeCardFromHand(cardBeingPlayed);
         playCard(playedCard);
+        GameActivity.clearBoard();
         makeGameReadyForHuman();
     }
 
+    /*
+        returns boolean array of playable cards for human
+     */
     public static boolean[] getPlayableCardsForHuman() {
         return players.get(0).getPlayableCards(currentRound.currentTrick.leadingSuit, currentRound.trump);
     }
 
+    /*
+        returns true if current player is AI, false otherwise
+     */
     public static boolean isCurrentPlayerAI() {
         return currentRound.isCurrentPlayerAI();
     }
 
+    /*
+        Calls preRoundPass from Round class.
+        Calls makeGameReadyForHuman()
+     */
     public static void humanPreRoundPass() {
         currentRound.preRoundPass();
         makeGameReadyForHuman();
     }
 
+    /*
+        calls preRoundCall from Round class
+     */
     public static void humanPreRoundCall() {
         currentRound.preRoundCall();
     }
 
+    /*
+        makes AI play card
+     */
     public static void makeAIPlay() {
         SmartVirtualPlayer aiPlayer = ((SmartVirtualPlayer) players.get(currentRound.currentTrick.currentPlayer));
-        Log.v("---GameSetUP113---", "aiPlayer: " + players.get(currentRound.currentTrick.currentPlayer));
+        //Log.v("---GameSetUP126---", "aiPlayer: " + players.get(currentRound.currentTrick.currentPlayer));
         Cards cardToPlay = aiPlayer.getCardToPlay(currentRound.currentTrick);
-        Log.v("---GameSetUP129---", "card AI is playing: " + cardToPlay);
+        Log.v("---GameSetUP128---", "card AI is playing: " + cardToPlay);
         GameActivity.showAIPlaycard(cardToPlay.toString());
         playCard(cardToPlay);
     }
 
+    /*
+        Makes AI play preRound.
+        They will make decisions to call, go alone, or pass
+     */
     public static void makeAIPlayPreRound() {
         int playerIndex = currentRound.currentTrick.currentPlayer;
         SmartVirtualPlayer aip = ((SmartVirtualPlayer) players.get(playerIndex));
@@ -154,6 +195,10 @@ public class GameSetUp {
         }
     }
 
+    /*
+        Makes teammate of alone player the outPlayer.
+        Clears teammates hand.
+     */
     public static void goAlone(int goAlonePlayer) {
         int outPlayer = (goAlonePlayer + 2) % 4;
         currentRound.outPlayer = outPlayer;
@@ -164,6 +209,9 @@ public class GameSetUp {
         }
     }
 
+    /*
+        sets Trump suit
+     */
     public static void humanPreRoundCallSuit(String suit) {
         if (suit.equals("DIAMONDS")) {
             currentRound.preRoundCall(Cards.SUIT.DIAMONDS);
@@ -176,7 +224,11 @@ public class GameSetUp {
         }
     }
 
-    // used for both AI and humans
+    /*
+        Calls playCard from Round class.
+        Used for both AI and humans.
+        Updates score if round is over.
+     */
     private static void playCard(Cards c) {
         currentRound.playCard(c);
 
@@ -192,6 +244,9 @@ public class GameSetUp {
         }
     }
 
+    /*
+        returns ArrayList of ArrayLists containing every player's hand
+     */
     public static ArrayList<ArrayList<Cards>> getAllHands() {
         ArrayList<ArrayList<Cards>> out = new ArrayList<ArrayList<Cards>>();
         for(Player p : players) {
@@ -200,6 +255,9 @@ public class GameSetUp {
         return out;
     }
 
+    /*
+        returns ArrayList of human's hand
+     */
     public static ArrayList<Cards> getHumanHand() {
         ArrayList<Cards> ret = new ArrayList<Cards>();
         for (int i = 0; i < 5; i++) {
@@ -208,6 +266,9 @@ public class GameSetUp {
         return ret;
     }
 
+    /*
+        returns ArrayList of com1's hand
+     */
     public static ArrayList<Cards> getComHand1() {
         ArrayList<Cards> ret = new ArrayList<Cards>();
         for (int i = 0; i < 5; i++) {
@@ -216,6 +277,9 @@ public class GameSetUp {
         return ret;
     }
 
+    /*
+        returns ArrayList of com2's hand
+     */
     public static ArrayList<Cards> getComHand2() {
         ArrayList<Cards> ret = new ArrayList<Cards>();
         for (int i = 0; i < 5; i++) {
@@ -224,6 +288,9 @@ public class GameSetUp {
         return ret;
     }
 
+    /*
+        returns ArrayList of com3's hand
+     */
     public static ArrayList<Cards> getComHand3() {
         ArrayList<Cards> ret = new ArrayList<Cards>();
         for (int i = 0; i < 5; i++) {
