@@ -18,11 +18,17 @@ public class Cards {
     public final SUIT suit;
     public final int value;
 
+    /*
+        Constructor
+     */
     public Cards(SUIT suit, int value) {
         this.suit = suit;
         this.value = value;
     }
 
+    /*
+        returns string value of card
+     */
     @Override
     public String toString()
     {
@@ -81,6 +87,9 @@ public class Cards {
         return this.value == otherCard.value && this.suit == otherCard.suit;
     }
 
+    /*
+        gets the same color suit.  Used for determining left
+     */
     public static SUIT getSameColorSuit(SUIT trump) {
         SUIT sameColor = SUIT.HEARTS;
         switch(trump) {
@@ -100,6 +109,9 @@ public class Cards {
         return sameColor;
     }
 
+    /*
+        assigns values to each card
+     */
     public int biddingValue(SUIT trump) {
         SUIT sameColor= getSameColorSuit(trump);
 
@@ -164,6 +176,9 @@ public class Cards {
         return this.value;
     }
 
+    /*
+        returns card with greater value
+     */
     public boolean greater(Cards other, SUIT trump, SUIT lead) {
         Log.v("---Cards166---", "this: " + this);
         Log.v("---Cards167---", "other: " + other);
