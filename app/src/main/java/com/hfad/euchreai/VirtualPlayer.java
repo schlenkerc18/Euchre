@@ -16,21 +16,21 @@ public class VirtualPlayer extends SmartVirtualPlayer{
         super(name);
     }
 
-    public Cards playCard(Cards card){  // need to make static???????????????????????/
-        boolean[] playableTrueFalse = this.getPlayableCards(Trick.leadingSuit, Trick.trump);
-        ArrayList<Integer> playableCards = new ArrayList<Integer>();
-        for (int i = 0 ; i < playableTrueFalse.length;i++)
-        {
-            boolean b = playableTrueFalse[i];
-            if (b == true)
-                playableCards.add(i);
-        }
-        Random random = new Random();
-        int r = random.nextInt(playableCards.size());
-        Cards c = hand.get(playableCards.get(r));
-        this.removeCardFromHand(c);
-        return c;
-    }
+ //   public Cards playCard(Cards card){
+//        boolean[] playableTrueFalse = this.getPlayableCards(Trick.leadingSuit, Trick.trump);
+//        ArrayList<Integer> playableCards = new ArrayList<Integer>();
+//        for (int i = 0 ; i < playableTrueFalse.length;i++)
+//        {
+//            boolean b = playableTrueFalse[i];
+//            if (b == true)
+//                playableCards.add(i);
+//        }
+//        Random random = new Random();
+//        int r = random.nextInt(playableCards.size());
+//        Cards c = hand.get(playableCards.get(r));
+//        this.removeCardFromHand(c);
+//        return c;
+   // }
 
     public boolean pickUp(Cards kitty){
 
