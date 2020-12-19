@@ -86,9 +86,10 @@ public class Cards {
         Cards otherCard = (Cards) obj;
         return this.value == otherCard.value && this.suit == otherCard.suit;
     }
-    
+
     /*
         gets the same color suit.  Used for determining left
+        new stuff here
      */
     public static SUIT getSameColorSuit(SUIT trump) {
         SUIT sameColor = SUIT.HEARTS;
