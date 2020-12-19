@@ -89,7 +89,7 @@ public class Cards {
 
     /*
         gets the same color suit.  Used for determining left
-        new stuff here
+   
      */
     public static SUIT getSameColorSuit(SUIT trump) {
         SUIT sameColor = SUIT.HEARTS;
