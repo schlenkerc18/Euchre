@@ -87,6 +87,7 @@ public class Cards {
         return this.value == otherCard.value && this.suit == otherCard.suit;
     }
 
+    
     /*
         gets the same color suit.  Used for determining left
      */
